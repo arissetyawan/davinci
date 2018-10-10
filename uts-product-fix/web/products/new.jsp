@@ -26,7 +26,12 @@
                 </div>
                 <div class="form-group">
                     <label for="category_id">
-                        Category ID: <input class="form-control" type="number" id="category_id" name="category_id" value=<c:out value="${products.category_id}" /> />
+                        Category :
+                        <select class="form-control" name="category_id">  
+                        <c:forEach items="${categories}" var="categories">
+                            <option value="<c:out value="${categories.category_id}"/>"><c:out value="${categories.category_name}"/></option>
+                        </c:forEach>            
+                        </select>    
                     </label>
                 </div>
                 <div class="form-group">

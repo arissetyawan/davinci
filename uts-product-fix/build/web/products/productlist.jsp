@@ -55,7 +55,7 @@
                                 Name
                             </th>
                             <th>
-                                Category ID
+                                Category
                             </th>
                             <th>
                                 Price
@@ -80,7 +80,7 @@
                                 Name
                             </th>
                             <th align="center">
-                                Category ID
+                                Category
                             </th>
                             <th align="center">
                                 Price
@@ -97,6 +97,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
+                       
                         <c:forEach items="${products}" var="products">
                             
                             <tr>
@@ -118,9 +119,10 @@
                                 <td>
                                     <c:out value="${products.updated_at}"/>
                                 </td>
-                                    <td align="center"><a href="products?action=edit&product_id=<c:out value="${products.product_id}"/>">Update</a></td>
+                                    <td align="center"><a href="products?action=edit&product_id=<c:out value="${products.product_id}"/>">Edit</a></td>
                                     <td align="center"><a href="products?action=delete&product_id=<c:out value="${products.product_id}"/>">Delete</a></td>
                                 </tr>
+                                
                             </c:forEach>
                     </tbody>            
                 </table>

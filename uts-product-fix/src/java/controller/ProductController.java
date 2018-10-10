@@ -9,6 +9,7 @@ import DAO.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Category;
 import model.Product;
 
 /**
@@ -126,15 +128,21 @@ public class ProductController extends HttpServlet {
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-                throws ServletException, IOException {
+                throws ServletException, IOException, SQLException {
+            ProductDAO pDAO= new ProductDAO();
+            List<Category> categories = pDAO.getCategories();
+            request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("products/new.jsp");
             dispatcher.forward(request, response);
+            
         }
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException, SQLException {
             ProductDAO pDAO= new ProductDAO();
             int id = Integer.parseInt(request.getParameter("product_id"));
             request.setAttribute("products", pDAO.getProductByID(id));
+            List<Category> categories = pDAO.getCategories();
+            request.setAttribute("categories", categories);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("products/edit.jsp");
             dispatcher.forward(request, response);
@@ -142,12 +150,14 @@ public class ProductController extends HttpServlet {
     
    private void updateProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+        int product_id = Integer.parseInt(request.getParameter("product_id"));
         String category_id = request.getParameter("category_id");
         String name = request.getParameter("name");
         float price = Float.parseFloat(request.getParameter("price"));
         int stock = Integer.parseInt(request.getParameter("stock"));
  
         Product p = new Product();
+        p.setProduct_id(product_id);
         p.setCategory_id(category_id);
         p.setName(name);
         p.setPrice(price);

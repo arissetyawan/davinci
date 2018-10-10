@@ -21,12 +21,22 @@
             <form method="POST" action='products?action=update' name="frmAddProduct" role="form"> 
                 <div class="form-group">
                     <label for="name">
+                        <input class="form-control" type="hidden" id="product_id" name="product_id" value="<c:out value="${products.product_id}" />" />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="name">
                         Name:<input class="form-control" type="text" id="name" name="name" value="<c:out value="${products.name}" />" />
                     </label>
                 </div>
                 <div class="form-group">
                     <label for="category_id">
-                        Category ID: <input class="form-control" type="number" id="category_id" name="category_id" value=<c:out value="${products.category_id}" /> />
+                        Category :
+                        <select class="form-control" name="category_id">  
+                        <c:forEach items="${categories}" var="categories">
+                            <option value="<c:out value="${categories.category_id}"/>"><c:out value="${categories.category_name}"/></option>
+                        </c:forEach>            
+                        </select>    
                     </label>
                 </div>
                 <div class="form-group">

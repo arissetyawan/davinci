@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import model.Category;
 
 import model.Product;
 import model.koneksi;
@@ -104,6 +105,25 @@ public class ProductDAO {
         return products;
     }
     
+    public ArrayList<Category> getCategories() throws SQLException{
+        String query = "select * from category";
+        ArrayList<Category> category = new ArrayList<>();
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        
+        while(rs.next()){
+            Category cat = new Category();
+            cat.setCategory_id(Integer.parseInt(rs.getString("category_id")));
+            cat.setCategory_name(rs.getString("category_name"));
+            
+            
+            category.add(cat);
+        }
+        st.close();
+        rs.close();
+        return category;
+    }
+    
     public Product getProductByID(int id) throws SQLException{
         String query = "select * from product where product_id='"+id+"'";
         
@@ -111,6 +131,7 @@ public class ProductDAO {
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
         if(rs.next()){
+            p.setProduct_id(Integer.parseInt(rs.getString("product_id")));
             p.setCategory_id(rs.getString("category_id"));
             p.setName(rs.getString("name"));
             p.setPrice(Float.parseFloat(rs.getString("price")));
