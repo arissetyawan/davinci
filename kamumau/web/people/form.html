@@ -1,0 +1,18 @@
+<table>  
+<tr><td>Name:</td>
+    <td><input type="text" name="name" value="<c:out value='${person.getName()}' />"/></td></tr>  
+<tr><td>Phone:</td>
+    <td><input type="text" name="phone" value="<c:out value='${person.getPhone()}' />"/></td></tr>  
+<tr><td>Profession:</td>
+    <td><select name="profession" style="width:155px">  
+        <option>Programmer</option>  
+        <option>Marketting</option>  
+        <option>Consultant</option>  
+        <option>Designer</option>  
+        <option>Project Manager</option>  
+        <option>Analyst</option>  
+        <option>Other</option>  
+        </select>  
+        </td></tr>  
+<tr><td colspan="2"><input type="submit" value="Save"/></td></tr>  
+</table>
