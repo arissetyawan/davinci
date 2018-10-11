@@ -36,7 +36,7 @@ public class Category extends MyConnection {
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public Category find(int id){
         Category category = new Category();
         String query = "SELECT * FROM " + tableName + " WHERE id = " + id + " ";
