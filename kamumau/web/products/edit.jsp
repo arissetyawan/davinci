@@ -49,9 +49,9 @@
               <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                  <a class="dropdown-item" href="#">Category A</a>
-                  <a class="dropdown-item" href="#">Category B</a>
-                  <a class="dropdown-item" href="#">Category C</a>
+                    <c:forEach items="${categories}" var="categories">
+                             <a class="dropdown-item" href="#"><c:out value="${categories.name}"/></a>
+                    </c:forEach>
                 </div>
               </li>
               <li class="nav-item active">

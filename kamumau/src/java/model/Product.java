@@ -85,13 +85,15 @@ public class Product extends MyConnection{
     
     public boolean addProduct(Product p){
         
-        String query = "insert into products(name, category_id, price, stock) "
+        String query = "insert into products(name, category_id, price, stock, owner) "
                     + "values('"+p.getName()+"', "
                     + "'"+p.getCategory_id()+"', "
                     + "'"+p.getPrice()+"', "
-                    + "'"+p.getStock()+"')";
+                    + "'"+p.getStock()+"',"
+                    + "'"+user_id+"')";
             
-        try (Statement st = this.conn.createStatement()) {
+        try{
+            Statement st = this.conn().createStatement();
             st.executeUpdate(query);
         } catch (SQLException ex) {
             System.out.println("gagal insert, "+ex);
@@ -132,7 +134,7 @@ public class Product extends MyConnection{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p inner join "
                 + "categories c on p.category_id = c.category_id inner join users u on p.owner = u.id "
-                + "where p.owner='"+user_id+"' order by c.name, p.id"; //user_id hardcoded
+                + "where p.owner = "+user_id+" order by c.name, p.id"; //user_id hardcoded
         ArrayList<Product> products = new ArrayList<>();
         ResultSet rs;
         try(Statement st = this.conn().createStatement()){
@@ -150,7 +152,7 @@ public class Product extends MyConnection{
             }
             rs.close();
         }catch(SQLException e){
-        
+            System.err.println("getProducts() : "+e.getMessage());
         }
         
         

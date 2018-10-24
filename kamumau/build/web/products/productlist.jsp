@@ -54,7 +54,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
                <c:forEach items="${categories}" var="categories">
-                             <a class="dropdown-item" href="#"><c:out value="${categories.name}"/></a>
+                    <a class="dropdown-item" href="#"><c:out value="${categories.name}"/></a>
                </c:forEach>
             </div>
           </li>
@@ -82,7 +82,7 @@
                     <thead>
                         <tr>
                             <th>
-                                No
+                                No.
                             </th>
                             <th>
                                 Name
