@@ -29,6 +29,8 @@ public class Product extends MyConnection{
     protected int stock;
     protected String updated_at;
     
+    public int user_id=1;
+            
     public Product(){
         super();
     }
@@ -129,7 +131,8 @@ public class Product extends MyConnection{
     public ArrayList<Product> getProducts() throws SQLException{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p inner join "
-                + "categories c on p.category_id = c.category_id order by c.name, p.id";
+                + "categories c on p.category_id = c.category_id inner join users u on p.owner = u.id "
+                + "where p.owner='"+user_id+"' order by c.name, p.id"; //user_id hardcoded
         ArrayList<Product> products = new ArrayList<>();
         ResultSet rs;
         try(Statement st = this.conn().createStatement()){

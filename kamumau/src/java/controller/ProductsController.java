@@ -81,7 +81,10 @@ public class ProductsController extends ApplicationController {
     private void listProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         Product p = new Product();
+        Category c = new Category();
         List<Product> products = p.getProducts();
+        List<Category> categories = c.all();
+        request.setAttribute("categories", categories);
         request.setAttribute("products", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("products/productlist.jsp");
         dispatcher.forward(request, response);
@@ -114,7 +117,6 @@ public class ProductsController extends ApplicationController {
         }
     }
     
-    //Still error to show categories list
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException, SQLException {
             Category c = new Category();
