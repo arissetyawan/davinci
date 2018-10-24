@@ -9,20 +9,72 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Edit Product</title>
-        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="Resource/bootstrap.css" rel="stylesheet">
+    <head>		
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <title>Product List</title>
+    <script type="text/javascript">
+        function ChangeColor(tableRow, highLight) {
+            if (highLight) {
+                tableRow.style.backgroundColor = '#B2EBF2';
+            }else{
+                tableRow.style.backgroundColor = 'white';
+            }
+            }
+            function DoNav(theUrl){
+            document.location.href = theUrl;
+        }
+    </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"  crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"   crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
     </head>
     <body>
-        <div class="container">
+        <div>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <a class="navbar-brand" href="#">KamuMau</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home</a>
+              </li>
+              <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                  <a class="dropdown-item" href="#">Category A</a>
+                  <a class="dropdown-item" href="#">Category B</a>
+                  <a class="dropdown-item" href="#">Category C</a>
+                </div>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Products</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Sign In</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Sign Up</a>
+              </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search Products..." aria-label="Search Products...">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </div>
+        </nav>
+        </div>
+        <div class="container" style="margin-top: 5%">
             <form method="POST" action='products?action=update' name="frmAddProduct" role="form"> 
                 <div class="form-group">
-                    <label for="name">
                         <input class="form-control" type="hidden" id="product_id" name="product_id" value="<c:out value="${products.product_id}" />" />
-                    </label>
                 </div>
                 <div class="form-group">
                     <label for="name">

@@ -125,7 +125,6 @@ public class ProductsController extends ApplicationController {
             
         }
     
-    //Still error to show categories list
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException, SQLException {
             Product p = new Product();
