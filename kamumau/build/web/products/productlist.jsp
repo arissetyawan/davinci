@@ -17,32 +17,65 @@
 <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
 <title>Product List</title>
 
-
-<link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
-<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+<script type="text/javascript">
+    function ChangeColor(tableRow, highLight) {
+        if (highLight) {
+            tableRow.style.backgroundColor = '#B2EBF2';
+        }else{
+            tableRow.style.backgroundColor = 'white';
+        }
+        }
+        function DoNav(theUrl){
+        document.location.href = theUrl;
+    }
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"   crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
 </head>
-	<body>
-        <br>
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <a class="navbar-brand" href="#">ApalahSHOP</a>
-              </div>
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Page 1</a></li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
-              </ul>
+<body>
+    <div>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">KamuMau</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Category A</a>
+              <a class="dropdown-item" href="#">Category B</a>
+              <a class="dropdown-item" href="#">Category C</a>
             </div>
-        </nav>
-        
-	<div class="wrap">
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Products</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Sign In</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Sign Up</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search Products..." aria-label="Search Products...">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+        </div>
+	<div class="wrap" style="margin-top:5%">
 	<section>
             <div class="container">
                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -96,7 +129,6 @@
                             </th>
                         </tr>
                     </tfoot>
-                    
                        <% int no =1; %>
                         <c:forEach items="${products}" var="products">
                             
@@ -123,20 +155,18 @@
                                     <td align="center"><a href="products?action=delete&id=<c:out value="${products.product_id}"/>">Delete</a></td>
                                 </tr>
                                 <% no++; %>
-                            </c:forEach>
-                                
+                            </c:forEach>                                
                 </table>
                 <div>
-                <a href="products?action=new" role="button" class="btn btn-primary btn-lg" data-toggle="modal">Add New Product</a>
+                    <a href="products?action=new" role="button" class="btn btn-primary btn-lg">Add New Product</a>
                 </div>
             </div>
 	</section>	
 </div>
-
+</body>
 <script>
     $(document).ready(function() {
         $('#example').DataTable();
     });
 </script>
-</body>
 </html>

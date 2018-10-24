@@ -132,8 +132,7 @@ public class Product extends MyConnection{
                 + "categories c on p.category_id = c.category_id order by c.name, p.id";
         ArrayList<Product> products = new ArrayList<>();
         ResultSet rs;
-        try{
-            Statement st = this.conn().createStatement();
+        try(Statement st = this.conn().createStatement()){
             rs = st.executeQuery(query);
             while(rs.next()){
                 Product p = new Product();

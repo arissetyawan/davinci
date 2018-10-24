@@ -24,7 +24,7 @@ import model.Product;
  * @author XXVII
  */
 @WebServlet(name = "ProductsController", urlPatterns = {"/ProductsController"})
-public class ProductsController extends HttpServlet {
+public class ProductsController extends ApplicationController {
     private final static String add_action = "edit";
     private final static String delete_action = "delete";
     private final static String edit_action = "edit";

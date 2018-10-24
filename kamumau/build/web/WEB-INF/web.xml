@@ -12,6 +12,15 @@
         <servlet-name>ProductsController</servlet-name>
         <servlet-class>controller.ProductsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrdersController</servlet-name>
+        <servlet-class>controller.OrdersController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TransactionsController</servlet-name>
+        <servlet-class>controller.TransactionsController</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>PeopleController</servlet-name>
         <url-pattern>/people</url-pattern>
@@ -24,6 +33,15 @@
         <servlet-name>ProductsController</servlet-name>
         <url-pattern>/products</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrdersController</servlet-name>
+        <url-pattern>/orders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransactionsController</servlet-name>
+        <url-pattern>/transactions</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30

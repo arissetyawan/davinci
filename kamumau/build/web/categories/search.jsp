@@ -12,21 +12,23 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
   <div class="container">
-    <h1 class="display-6">Looking for categories ?</h1>
-    <p>
-    <form action="categories?action=search" method="post">
-        <input type="text" name="keyword" />
-        <input type="submit" class="btn btn-primary btn-lg" value="Search"/>
+    <h1 class="display-3">Looking for categories ?</h1>
+    <p><form>
+        <input type="text" name="keyword" <c:out value="${Category.name}" />/>
+        <input type="submit" class="btn btn-primary btn-lg" href="categories?action=search"/>
     </form>
   </div>
-    
-    
-    <div class="container">
+</div>
+
+<div class="container">
+
+ 
   <div align="center">
-                <h1>List of Category</h1>
+
+            <h1>List of Category</h1>
             <h4><c:out value='${message}' /></h4>
-           <h2><a href="categories?action=new">Add Category</a></h2>
-<table border="1" cellpadding="5" >
+            <h2><a href="categories?action=new">Add Category</a></h2>
+                <table border="1" cellpadding="5">
                         <tr>
                                 <th>ID</th>
                                 <th>Name Category</th>
@@ -55,12 +57,6 @@
 
 </div> <!-- /container -->
 
-</div>
-
-
-
 </main>
-    
-    
 
 <%@include file= "/layouts/footer.html" %>
