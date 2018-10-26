@@ -74,6 +74,7 @@
         <div class="container" style="margin-top: 5%">
             <form method="POST" action='products?action=update' name="frmAddProduct" role="form"> 
                 <div class="form-group">
+                    
                         <input class="form-control" type="hidden" id="product_id" name="product_id" value="<c:out value="${products.product_id}" />" />
                 </div>
                 <div class="form-group">

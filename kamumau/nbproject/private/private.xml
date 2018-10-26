@@ -5,10 +5,21 @@
         <group>
             <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/src/java/controller/ProductsController.java</file>
             <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/src/java/controller/ApplicationController.java</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/orders/listout.jsp</file>
             <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/src/java/model/Feedback.java</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/orders/list.jsp</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/src/java/controller/OrdersController.java</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/src/java/model/Category.java</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/products/edit.jsp</file>
             <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/src/java/model/Product.java</file>
             <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/src/java/model/MyConnection.java</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/people/form.html</file>
             <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/WEB-INF/web.xml</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/products/productlist.jsp</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/transactions/list.jsp</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/products/new.jsp</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/people/edit.jsp</file>
+            <file>file:/E:/TI/S5/Object%20Oriented%20Programming%202/Projects/davinci/kamumau/web/transactions/edit.jsp</file>
         </group>
     </open-files>
 </project-private>

@@ -119,7 +119,7 @@ public class Product extends MyConnection{
                 + "price='"+p.getPrice()+"',"
                 + "stock='"+p.getStock()+"',"
                 + "updated_at=CURRENT_TIMESTAMP"
-                + " where product_id='"+p.getProduct_id()+"'";
+                + " where id='"+p.getProduct_id()+"'";
        
         try (Statement st = this.conn().createStatement()) {
             st.executeUpdate(query);

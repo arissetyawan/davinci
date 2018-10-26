@@ -75,7 +75,7 @@
       </div>
     </nav>
         </div>
-	<div class="wrap" style="margin-top:5%">
+	<div class="wrap" style="margin-top:7%">
 	<section>
             <div class="container">
                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -143,16 +143,16 @@
                                     <c:out value="${products.category_id}"/>
                                 </td>
                                 <td>
-                                    <c:out value="${products.price}"/>
+                                    Rp <c:out value="${products.price}"/>
                                 </td>
                                 <td>
-                                    <c:out value="${products.stock}"/>
+                                    <c:out value="${products.stock}"/> Pcs
                                 </td>
                                 <td>
                                     <c:out value="${products.updated_at}"/>
                                 </td>
                                     <td align="center"><a href="products?action=edit&id=<c:out value="${products.product_id}"/>">Edit</a></td>
-                                    <td align="center"><a href="products?action=delete&id=<c:out value="${products.product_id}"/>">Delete</a></td>
+                                    <td align="center"><a onclick="return confirm('Are you sure ?')" href="products?action=delete&id=<c:out value="${products.product_id}"/>">Delete</a></td>
                                 </tr>
                                 <% no++; %>
                             </c:forEach>                                
