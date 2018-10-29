@@ -34,10 +34,14 @@
                     <th>#</th>
                     <th>ID</th>
                     <th>Order no</th>
-                    <th>Product</th>
+                    <th>Product name</th>
                     <th>Qty</th>
                     <th>Total</th>
-                    <th>Actions</th>    
+                    <c:choose>
+                    <c:when test="${order.getStatus() == 'open'}">
+                        <th>Actions</th>
+                    </c:when>
+                    </c:choose>
                 </tr>
             </thead>
             <tbody>
@@ -52,9 +56,15 @@
                     <td><c:out value="${transaction.name}" /></td>
                     <td><c:out value="${transaction.qty}"/></td>
                     <td><c:out value="${transaction.total}"/></td>
-                    <td>
-                        <a type="button" class="btn btn-danger" href="transactions?action=delete&id=<c:out value='${transaction.getId()}' />" onclick="return confirm('Are you sure?')" >Delete</a>                     
-                    </td>
+                    <c:choose>
+                    <c:when test="${order.getStatus() == 'open'}">
+                        <td>
+                            <a type="button" class="btn btn-danger" href="transactions?action=delete&id=<c:out value='${transaction.getId()}' />" onclick="return confirm('Are you sure?')" >Delete</a>                     
+                        </td>
+                    </c:when>
+                    </c:choose>
+
+                    
                 </tr>
             <%i++; %>
             </c:forEach>
@@ -62,8 +72,17 @@
         </table>
     </div>  
     <div align="right" style="margin: 5%">
-        <a class="btn btn-primary" href="#">Checkout</a>
+    
+    <c:choose>
+    <c:when test="${order.getStatus() == 'completed'}">
+        <a class="btn btn-primary" href="#" />Write feedback</a>
+    </c:when>
+    <c:otherwise>
+        <a class="btn btn-primary" href="transactions?action=process&order=<c:out value='${order.getNo()}' />&status=<c:out value='${order.getStatus()}' />"><c:out value="${act}" /></a>
         <a class="btn btn-danger" href="#">Cancel</a>
+    </c:otherwise>
+    </c:choose>
+
     </div>
 
     </body>

@@ -22,7 +22,7 @@ public class Transaction extends MyConnection{
     private int qty;
     private int total;
     private String name;
-    private static final String TABLE_NAME = "transaction";
+    private static final String TABLE_NAME = "transactions";
     private static final String TABLE_NAME_ORDER = "orders";
 
     public Transaction() {
@@ -83,16 +83,13 @@ public class Transaction extends MyConnection{
         this.name = name;
     }
     
-    
+    public int generateNo(){
+        return (int) System.currentTimeMillis();
+    }
     
     public ArrayList<Transaction> all(int order_id){
-        //String query = "SELECT * FROM " + TABLE_NAME  + " WHERE id_order = " + order_id;
-//        String query2 = "SELECT o.id,o.no,o.user_id,o.buyer_id,u.full_name as seller_name, o.created_at, o.updated_at, o.status FROM orders o \n" +
-//        "INNER JOIN users u ON o.user_id = u.id WHERE o.buyer_id = "+user_id+";";
-//        
-        
         String query = "SELECT t.id, t.id_order, t.id_product, p.name, t.qty, t.total "
-                + "FROM transaction t INNER JOIN products p ON t.id_product = p.id WHERE id_order = "+ order_id;
+                + "FROM "+TABLE_NAME+" t INNER JOIN products p ON t.id_product = p.id WHERE id_order = "+ order_id;
         
         
         ArrayList<Transaction> transactions = new ArrayList<>();
@@ -129,7 +126,6 @@ public class Transaction extends MyConnection{
                 tr.setId(res.getInt("id"));
                 tr.setQty(res.getInt("qty"));
                 tr.setTotal(res.getInt("total"));
-                
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -138,11 +134,47 @@ public class Transaction extends MyConnection{
     }
     
     
+    public Transaction getExistedItem(int order_id, int product_id){
+        String query = "SELECT * FROM "+TABLE_NAME+" WHERE id_order = '"+order_id+"' and id_product = '"+product_id+
+                "'";
+        Transaction tr = new Transaction();
+        try {
+            Statement stmt = this.conn().createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            if (res.next()) {
+                tr.setId(res.getInt("id"));
+                tr.setId_product(res.getInt("id_product"));
+                tr.setId_order(res.getInt("id_order"));
+                tr.setId(res.getInt("id"));
+                tr.setQty(res.getInt("qty"));
+                tr.setTotal(res.getInt("total"));
+            }
+        } catch (SQLException e) {
+            System.err.println("getExistedItem() : " + e.getMessage());
+        }
+        return tr;
+    }
+    
+    
+    
+    public boolean itemAlreadyExists(int product_id, int order_id){
+        String query = "SELECT * FROM "+TABLE_NAME+" WHERE id_order = '"+order_id+"' and id_product = '"+product_id+
+                "'";
+        try{
+            Statement stmt = this.conn().createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            return res.next();
+        }catch(SQLException e){
+            System.err.println("itemExists() : "+e.getMessage());
+            return false;
+        }
+    }
+    
+    
     public boolean initOrCeate(Transaction trans, int user_id,int seller_id){
         //Kelompok product bisa lihat method ini
-        System.out.println("Seller id "+seller_id);
         String query = "SELECT * FROM " + TABLE_NAME_ORDER + " WHERE user_id = " + seller_id + 
-                " AND buyer_id = "+user_id+" AND status='new'";
+                " AND buyer_id = "+user_id+" AND status='open'";
         try {
             Statement stmt = this.conn().createStatement();
             ResultSet res = stmt.executeQuery(query);
@@ -157,10 +189,15 @@ public class Transaction extends MyConnection{
                 order.setUpdated_at(res.getDate("updated_at"));
                 order.update();
                 trans.setId_order(res.getInt("no"));
-                trans.create();
+                if(itemAlreadyExists(this.id_product, order.getNo())){
+                    trans.updateQuantityOnly();
+                }else{
+                    trans.create();
+                }
             }else{
                 order.setUser_id(seller_id);
                 order.setBuyer_id(user_id);
+                order.setStatus("open");
                 if(order.create()){
                    int key = order.getNo();
                    System.out.println("Generated : "+order.getNo());
@@ -168,7 +205,6 @@ public class Transaction extends MyConnection{
                    trans.create();
                 }
             }
-            
             return true;
         } catch (SQLException e) {
             System.out.println("initOrCreateTrans() : "+e.getMessage());
@@ -178,20 +214,57 @@ public class Transaction extends MyConnection{
     
     
     public boolean create() {
+        float price = getPrice();
         String query = "INSERT INTO "+ TABLE_NAME +" (id_order, id_product, qty, total) "
-                + "values ('" + this.id_order + "', '" + this.id_product  + "', '" +  this.qty  + "', '"+ this.total + "')";
+                + "values ('" + this.id_order + "', '" + this.id_product  + "', '" +  this.qty  + "', '"+ price + "')";
         try {
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query) > 0;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("craete() : "+e.getMessage());
         }
         return false;
     }
     
+    
+    public boolean updateQuantityOnly(){
+        try {
+            Transaction tr = new Transaction();
+            tr = getExistedItem(this.id_order, this.id_product);
+            String query = "UPDATE "+ TABLE_NAME +  " SET qty = "+ (tr.getQty()+1) +", total = "+
+                    (getPrice() + getPrice()) +" WHERE id = " + tr.getId() +"";    
+            System.out.println(query);
+            Statement stmt = this.conn().createStatement();
+            return stmt.executeUpdate(query) > 0;
+        } catch (SQLException e) {
+            System.out.println("updateQuantitty() : "+ e.getMessage());
+            return false;
+        }
+    }
+    
+    
+    public float getPrice(){
+        try{
+            String query = "select price from products where id = "+this.getId_product()+"";
+            Statement stmt = this.conn().createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            if(res.next()){
+                return res.getFloat("price");
+            }else{
+                return -1;
+            }
+        }catch(SQLException e){
+            System.err.println("getPrice() : "+ e.getMessage());
+            return -1;
+        }
+    }
+    
+    
     public boolean update() {
+        float price =  getPrice();
+        price *= this.qty;
         String query = "UPDATE "+ TABLE_NAME + " SET id_product='"+ this.id_product + 
-                "', qty = '"+ this.qty +"', total = '"+this.total+"' WHERE id = " + this.id;
+                "', qty = '"+ this.qty +"', total = '"+price+"' WHERE id = " + this.id;
         try {
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query) > 0;

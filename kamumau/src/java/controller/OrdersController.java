@@ -11,22 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Order;
 
-/*
-Cara masuk orders:
-
-kamumau/orders?action=list&choose=in
-
-table name ORDERS
-
-column
-id INT AI
-no Long
-user_id INT
-buyer_id INT
-created_at DATE
-updated_at DATE
-status VARCHAR
-*/
 public class OrdersController extends HttpServlet{
     private final static String ADD_ACTION = "new";
     private final static String DELETE_ACTION = "delete";
@@ -106,31 +90,19 @@ public class OrdersController extends HttpServlet{
         }
     }
     
-    
-    private void listOrder(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        Order o= new Order();
-        List<Order> order = o.all(USER_ID);
-        request.setAttribute("order", order);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("orders/list.jsp");
-        dispatcher.forward(request, response);
-    }
-    
+        
     private void listOrderWithChoose(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         Order o= new Order();
-        String choose = request.getParameter("choose");
-        List<Order> order = null;
-        System.out.println(choose);
-        if(choose.equals("in")){
-            order = o.allIncoming(USER_ID);
-            request.setAttribute("order", order);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("orders/list.jsp");
-            dispatcher.forward(request, response);
-        }else if(choose.equals("out")){
-            order = o.allMyOrders(USER_ID);
-            request.setAttribute("order", order);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("orders/listout.jsp");        
-            dispatcher.forward(request, response);
-        }
+        List<Order> order = o.allIncoming(USER_ID);
+        List<Order> mycart = o.allMyOrders(USER_ID);
+        List<Order> myCompletedOrders = o.allCompletedOrders(USER_ID);
+        List<Order> myOut = o.allOutcoming(USER_ID);
+        request.setAttribute("mycart", mycart);
+        request.setAttribute("order", order);
+        request.setAttribute("completed", myCompletedOrders);
+        request.setAttribute("outcoming", myOut);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("orders/list.jsp");
+        dispatcher.forward(request, response);        
     }
     
     
