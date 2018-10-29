@@ -15,19 +15,15 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-<title>Product List</title>
-
+<title>Products List</title>
 <script type="text/javascript">
-    function ChangeColor(tableRow, highLight) {
-        if (highLight) {
-            tableRow.style.backgroundColor = '#B2EBF2';
-        }else{
-            tableRow.style.backgroundColor = 'white';
-        }
-        }
-        function DoNav(theUrl){
-        document.location.href = theUrl;
-    }
+        function ChangeColor(tableRow, highLight) {
+                if (highLight) {
+                    tableRow.style.backgroundColor = '#B2EBF2';
+                }else {
+                    tableRow.style.backgroundColor = 'white';
+                }
+            }
 </script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
@@ -74,15 +70,28 @@
         </form>
       </div>
     </nav>
-        </div>
-	<div class="wrap" style="margin-top:7%">
-	<section>
-            <div class="container">
-                <div>
-                    <a href="products?action=new" role="button" class="btn btn-primary btn-lg">Add New Product</a>
-                </div>
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 2%">
-                    <thead>
+    </div>        
+    <div>
+        <div style="padding-left: 15px; margin-top: 4%">
+        <h2>
+            Product(s) List
+        </h2>
+        <p>List all products that in stock and products that have zero stock</p>
+    </div>
+    <hr>
+    <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 2%">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">My Products</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="zero-tab" data-toggle="tab" href="#zero" role="tab" aria-controls="zero" aria-selected="false">Out of Stock</a>
+        </li>
+    </ul>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <table class="table">
+            <thead>
                         <tr>
                             <th>
                                 No.
@@ -107,35 +116,12 @@
                             </th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th align="center">
-                                No
-                            </th>
-                            <th align="center">
-                                Name
-                            </th>
-                            <th align="center">
-                                Category
-                            </th>
-                            <th align="center">
-                                Price
-                            </th>
-                            <th align="center">
-                                Stock
-                            </th>
-                            <th align="center">
-                                Updated At
-                            </th>
-                            <th colspan="2" align="center">
-                                Action
-                            </th>
-                        </tr>
-                    </tfoot>
-                       <% int no =1; %>
+            <tbody>
+            <% int no =1; %>
                         <c:forEach items="${products}" var="products">
                             
-                            <tr>
+                            <tr onmouseover="ChangeColor(this, true);"
+                              onmouseout="ChangeColor(this, false);">
                                 <td>
                                     <% out.print(no); %>
                                 </td>
@@ -154,19 +140,77 @@
                                 <td>
                                     <c:out value="${products.updated_at}"/>
                                 </td>
-                                    <td align="center"><a href="products?action=edit&id=<c:out value="${products.product_id}"/>">Edit</a></td>
-                                    <td align="center"><a onclick="return confirm('Are you sure ?')" href="products?action=delete&id=<c:out value="${products.product_id}"/>">Delete</a></td>
+                                    <td>
+                                        <a href="products?action=edit&id=<c:out value="${products.product_id}"/>" class="btn btn-outline-info btn-sm">Edit</a>
+                                        <a onclick="return confirm('Are you sure ?')" href="products?action=delete&id=<c:out value="${products.product_id}"/>" class="btn btn-outline-danger btn-sm">Delete</a>
+                                    </td>
                                 </tr>
                                 <% no++; %>
-                            </c:forEach>                                
-                </table>
-            </div>
-	</section>	
+                            </c:forEach>     
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane" id="zero" role="tabpanel" aria-labelledby="zero-tab">
+        <table class="table">
+            <thead>
+                <tr>
+                            <th>
+                                No.
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                Stock
+                            </th>
+                            <th>
+                                Updated At
+                            </th>
+                            <th colspan="2">
+                                Action
+                            </th>
+                </tr>
+            </thead>
+            <tbody>
+            <% int n =1; %>
+                        <c:forEach items="${productsZero}" var="productsZero">
+                            
+                            <tr onmouseover="ChangeColor(this, true);"
+                              onmouseout="ChangeColor(this, false);">
+                                <td>
+                                    <% out.print(no); %>
+                                </td>
+                                <td>
+                                    <c:out value="${productsZero.name}"/>
+                                </td>
+                                <td>
+                                    <c:out value="${productsZero.category_id}"/>
+                                </td>
+                                <td>
+                                    Rp <c:out value="${productsZero.price}"/>
+                                </td>
+                                <td>
+                                    <c:out value="${productsZero.stock}"/> Pcs
+                                </td>
+                                <td>
+                                    <c:out value="${productsZero.updated_at}"/>
+                                </td>
+                                    <td>
+                                        <a href="products?action=edit&id=<c:out value="${products.product_id}"/>" class="btn btn-outline-info btn-sm">Edit</a>
+                                        <a onclick="return confirm('Are you sure ?')" href="products?action=delete&id=<c:out value="${products.product_id}"/>" class="btn btn-outline-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                                <% n++; %>
+                            </c:forEach>   
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
-<script>
-    $(document).ready(function() {
-        $('#example').DataTable();
-    });
-</script>
 </html>

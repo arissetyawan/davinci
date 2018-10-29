@@ -157,6 +157,33 @@ public class Product extends MyConnection{
         return products;
     }
     
+    public ArrayList<Product> getProductsZeroStock() throws SQLException{
+        String query = "select p.id as product_id , p.name as name, c.name as category, "
+                + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p inner join "
+                + "categories c on p.category_id = c.category_id inner join users u on p.owner = u.id "
+                + "where p.owner = "+user_id+" and p.stock ='0' order by c.name, p.id"; //user_id hardcoded
+        ArrayList<Product> products = new ArrayList<>();
+        ResultSet rs;
+        try(Statement st = this.conn().createStatement()){
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                Product p = new Product();
+                p.setProduct_id(rs.getInt("product_id"));
+                p.setName(rs.getString("name"));
+                p.setCategory_id(rs.getString("category"));
+                p.setPrice(rs.getFloat("price"));
+                p.setStock(rs.getInt("stock"));
+                p.setUpdated_at(rs.getString("updated_at"));
+                
+                products.add(p);
+            }
+            rs.close();
+        }catch(SQLException e){
+            System.err.println("getProducts() : "+e.getMessage());
+        }
+        return products;
+    }
+    
     public ArrayList<Product> getAllProducts() throws SQLException{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p "
