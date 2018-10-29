@@ -32,7 +32,6 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>ID</th>
                     <th>Order no</th>
                     <th>Product</th>
                     <th>Qty</th>
@@ -45,7 +44,6 @@
                 <tr onmouseover="ChangeColor(this, true);"
                     onmouseout="ChangeColor(this, false);">
                     <td><%=i %></td>
-                    <td><c:out value="${transaction.id}" /></td>
                     <td><c:out value="${transaction.id_order}" /></td>
                     <td><c:out value="${transaction.name}" /></td>
                     <td><c:out value="${transaction.qty}"/></td>
@@ -61,7 +59,7 @@
     
     </div>
     <div align="right" style="margin: 5%">
-        <a class="btn btn-primary" href="#">Deliver</a>
+        <a class="btn btn-primary" href="transactions?action=processseller&order=<c:out value='${order.getNo()}' />&status=<c:out value='${order.getStatus()}' />"><c:out value="${act}" /></a>
         <a class="btn btn-danger" href="#">Cancel</a>
     </div>
 

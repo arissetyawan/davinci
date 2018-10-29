@@ -9,12 +9,12 @@ import java.util.Date;
 
 public class Order extends MyConnection{
     private final String tableName= "orders";
-    private final String tableTransaction= "transaction";
+    private final String tableTransaction= "transactions";
     public int no;
     public int user_id;
     public Date created_at;
     public Date updated_at;
-    private String status="new";
+    private String status;
     public int buyer_id;
     public String buyer_name;
     public String user_name;
@@ -145,13 +145,8 @@ public class Order extends MyConnection{
     
     
     public ArrayList<Order> allMyOrders(int user_id){
-        //String query = "SELECT id, no, user_id, (SELECT u.fullname from orders o INNER JOIN users u ON o.buyer_id = u.id "
-        //        + ") as buyer_id FROM " + tableName  + " WHERE user_id = " + user_id + " ORDER BY id DESC";
-        
-        String query = "SELECT o.id,o.no,o.user_id,o.buyer_id,u.full_name as seller_name, o.created_at, o.updated_at, o.status FROM orders o \n" +
-        "INNER JOIN users u ON o.user_id = u.id WHERE o.buyer_id = "+user_id+";";
-        
-        
+        String query = "SELECT o.id,o.no,o.user_id,o.buyer_id,u.fullname as seller_name, o.created_at, o.updated_at, o.status FROM orders o \n" +
+        "INNER JOIN users u ON o.user_id = u.id WHERE o.buyer_id = "+user_id+" and STATUS = 'open' ORDER by id DESC;";    
         ArrayList<Order> orders = new ArrayList<>();
         try {
             Statement stmt = this.conn().createStatement();
@@ -175,11 +170,8 @@ public class Order extends MyConnection{
     }
 
     public ArrayList<Order> allIncoming(int user_id){
-        //String query = "SELECT id, no, user_id, (SELECT u.fullname from orders o INNER JOIN users u ON o.buyer_id = u.id "
-        //        + ") as buyer_id FROM " + tableName  + " WHERE user_id = " + user_id + " ORDER BY id DESC";
-        
-        String query = "SELECT o.id,o.no,o.user_id,o.buyer_id,u.full_name as buyer_name, o.created_at, o.updated_at, o.status FROM orders o \n" +
-        "INNER JOIN users u ON o.buyer_id = u.id WHERE o.user_id = "+user_id+";";
+        String query = "SELECT o.id,o.no,o.user_id,o.buyer_id,u.fullname as buyer_name, o.created_at, o.updated_at, o.status FROM orders o \n" +
+        "INNER JOIN users u ON o.buyer_id = u.id WHERE o.user_id = "+user_id+" AND status <> 'open' and status <> 'completed' ORDER BY id DESC;";
         
         
         ArrayList<Order> orders = new ArrayList<>();
@@ -205,24 +197,67 @@ public class Order extends MyConnection{
     }
     
     
-    /*public ArrayList<Transaction> getTransactions(int order_id) {
-        String query = "SELECT * FROM " + tableTransaction + " WHERE order_id= " + order_id;
-        ArrayList<Transaction> transactions = new ArrayList<>();
+    public ArrayList<Order> allOutcoming(int user_id){
+        String query = "SELECT o.id,o.no,o.user_id,o.buyer_id,u.fullname as name, o.created_at, o.updated_at, o.status FROM orders o \n" +
+        "INNER JOIN users u ON o.user_id = u.id WHERE o.buyer_id = "+user_id+" AND status <> 'open' AND status <> 'completed';";
+        
+        
+        ArrayList<Order> orders = new ArrayList<>();
         try {
             Statement stmt = this.conn().createStatement();
             ResultSet res = stmt.executeQuery(query);
             while (res.next()) {
-                Transaction t = new Transaction();
-                transactions.add(t);
+                Order order = new Order();
+                order.setNo(res.getInt("no"));
+                order.setCreated_at(res.getDate("created_at"));
+                order.setUpdated_at(res.getDate("updated_at"));
+                order.setId(res.getInt("id"));
+                order.setUser_id(res.getInt("user_id"));
+                order.setBuyer_id(res.getInt("buyer_id"));
+                order.setUser_name(res.getString("name"));
+                order.setStatus(res.getString("status"));
+                orders.add(order);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return transactions;
-    }*/
-
-
-
+        return orders;
+    }
+    
+    
+    
+    public ArrayList<Order> allCompletedOrders(int user_id){
+        //String query = "SELECT id, no, user_id, (SELECT u.fullname from orders o INNER JOIN users u ON o.buyer_id = u.id "
+        //        + ") as buyer_id FROM " + tableName  + " WHERE user_id = " + user_id + " ORDER BY id DESC";
+        
+        String query = "SELECT o.id,o.no,o.user_id,o.buyer_id,u.fullname as name, o.created_at, o.updated_at, o.status FROM orders o \n" +
+        "INNER JOIN users u ON o.user_id = u.id WHERE o.buyer_id = "+user_id+" AND status = 'completed' ORDER BY id DESC;";
+        
+        
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+            Statement stmt = this.conn().createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()) {
+                Order order = new Order();
+                order.setNo(res.getInt("no"));
+                order.setCreated_at(res.getDate("created_at"));
+                order.setUpdated_at(res.getDate("updated_at"));
+                order.setId(res.getInt("id"));
+                order.setUser_id(res.getInt("user_id"));
+                order.setBuyer_id(res.getInt("buyer_id"));
+                order.setUser_name(res.getString("name"));
+                order.setStatus(res.getString("status"));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return orders;
+    }
+    
+    
+    
     private boolean validate(){
         return true;
     }
@@ -263,6 +298,7 @@ public class Order extends MyConnection{
                 order.setId(res.getInt("id"));
                 order.setNo(res.getInt("no"));
                 order.setUser_id(res.getInt("user_id"));
+                order.setBuyer_id(res.getInt("buyer_id"));
                 order.setStatus(res.getString("status"));
                 order.setCreated_at(res.getDate("created_at"));
                 order.setUpdated_at(res.getDate("updated_at"));
@@ -272,8 +308,8 @@ public class Order extends MyConnection{
         }
         return order;
     }
-    public Order find(int id){
-        String query = "SELECT * FROM " + tableName + " WHERE id = " + id + " ";
+    public Order find(int no){
+        String query = "SELECT * FROM " + tableName + " WHERE no = " + no + " ";
         Order order = new Order();
         try {
             Statement stmt = this.conn().createStatement();
@@ -281,6 +317,9 @@ public class Order extends MyConnection{
             if (res.next()) {
                 order.setId(res.getInt("id"));
                 order.setNo(res.getInt("no"));
+                order.setUser_id(res.getInt("user_id"));
+                order.setBuyer_id(res.getInt("buyer_id"));
+                order.setStatus(res.getString("status"));
                 order.setCreated_at(res.getDate("created_at"));
                 order.setUpdated_at(res.getDate("updated_at"));
             }
@@ -290,9 +329,10 @@ public class Order extends MyConnection{
         return order;
     }
 
-    public Order initOrCeate(int user_id){
-        String query = "SELECT * FROM " + tableName + " WHERE user_id = " + user_id + " AND status='new'";
+    /*public Order initOrCeate(int user_id){
+        String query = "SELECT * FROM " + tableName + " WHERE user_id = " + user_id + " AND status='open'";
         Order order = new Order();
+        String now_date= generateDate();
         try {
             Statement stmt = this.conn().createStatement();
             ResultSet res = stmt.executeQuery(query);
@@ -302,7 +342,7 @@ public class Order extends MyConnection{
                 order.setUser_id(res.getInt("user_id"));
                 order.setStatus(res.getString("status"));
                 order.setCreated_at(res.getDate("created_at"));
-                order.setUpdated_at(res.getDate("updated_at"));
+                order.setUpdated_at(res.getDate(now_date));                
             }else{
                 order.setUser_id(user_id);
                 if(order.create()){
@@ -313,11 +353,15 @@ public class Order extends MyConnection{
             System.out.println(e.getMessage());
         }
         return order;
-    }
+    }*/
    
+
+    
+    
+    
     public boolean create() {
         String now_date= generateDate();
-        String status= "new";
+        String status= "open";
         this.setNo(this.generateNo());
         String query = "INSERT INTO "+ tableName +
                 "(no, user_id, buyer_id, created_at, updated_at,status) values ('" 

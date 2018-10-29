@@ -46,6 +46,12 @@ public class TransactionsController extends HttpServlet{
                     case "viewtransaction":
                         viewTransaction(request, response);
                         break;
+                    case "process":
+                        processOrder(request, response);
+                        break;
+                    case "processseller":
+                        processSeller(request, response);
+                        break;
                     default:
                         listTransaction(request, response);
                         break;
@@ -78,9 +84,38 @@ public class TransactionsController extends HttpServlet{
     
     private void listTransaction(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         Transaction tr= new Transaction();
+        Order order = new Order();
         int no = Integer.parseInt(request.getParameter("order"));
+        Order o = order.find(no);
+        //String status = request.getParameter("status");
+        String action = "";
+        switch(o.getStatus()){
+            case "open":
+                action = "Checkout";
+                break;
+            case "new":
+                action = "I have paid the order";
+                break;
+            case "paid":
+                action = "Waiting for confirmation";
+                break;
+            case "delivered":
+                action = "I have received the order";
+                break;
+            case "completed":
+                action = "Order completed";
+                break;
+            default:
+                action = o.getStatus();
+                break;
+        }
         List<Transaction> transaction = tr.all(no);
         request.setAttribute("transaction", transaction);
+        //request.setAttribute("order", String.valueOf(no));
+        request.setAttribute("order", o);
+        
+        request.setAttribute("act", action);
+        //request.setAttribute("status", status);
         RequestDispatcher dispatcher = request.getRequestDispatcher("transactions/list.jsp");
         dispatcher.forward(request, response);
     }
@@ -88,12 +123,37 @@ public class TransactionsController extends HttpServlet{
     
     private void viewTransaction(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         Transaction tr= new Transaction();
+        Order order = new Order();
         int no = Integer.parseInt(request.getParameter("order"));
-        int buyer_id = Integer.parseInt(request.getParameter("buyer_id"));
-        
+        Order o = order.find(no);
         List<Transaction> transaction = tr.all(no);
+        String action = "";
+        switch(o.getStatus()){
+            case "new":
+                action = "Waiting for buyer to paid";
+                break;
+            case "paid":
+                action = "Deliver order";
+                break;
+            case "delivered":
+                action = "Waiting for buyer confirmation";
+                break;
+            case "waiting":
+                action = "Confirm payment";
+                break;
+            case "completed":
+                action = "Order completed";
+                break;
+            default:
+                action = o.getStatus();
+                break;
+        }
+
         request.setAttribute("transaction", transaction);
-        request.setAttribute("buyer_id", buyer_id);
+        //request.setAttribute("buyer_id", buyer_id);
+        request.setAttribute("act", action);
+        request.setAttribute("order", o);
+        //request.setAttribute("status", status);
         RequestDispatcher dispatcher = request.getRequestDispatcher("transactions/viewtransaction.jsp");
         dispatcher.forward(request, response);
     }
@@ -117,7 +177,7 @@ public class TransactionsController extends HttpServlet{
             Order o = new Order();
             List<Order> order = o.all(USER_ID);
             request.setAttribute("order", order);
-            request.getRequestDispatcher("/orders/list.jsp").include(request, response);
+            request.getRequestDispatcher("orders?action=list").include(request, response);
         }else{
             message= "transaction failed to updated";     
             request.setAttribute("message", message);
@@ -126,22 +186,20 @@ public class TransactionsController extends HttpServlet{
         }
     }
    
+    
    
     private void createTransaction(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id_product = Integer.parseInt(request.getParameter("id_product"));
         int id_seller = Integer.parseInt(request.getParameter("id_seller"));
         int qty = Integer.parseInt(request.getParameter("qty"));
-        int total = Integer.parseInt(request.getParameter("total"));
- 
+        
         Transaction transaction = new Transaction();
         transaction.setId_product(id_product);
         transaction.setQty(qty);
-        transaction.setTotal(total);
         if(transaction.initOrCeate(transaction, USER_ID, id_seller)){
             message= "new added";                    
             request.setAttribute("message", message);
-            response.sendRedirect("orders?action="+LIST_ACTION+"&choose=in");
-        
+            response.sendRedirect("orders?action="+LIST_ACTION);
         }else{
             message= "failed to add";
             request.setAttribute("message", message);
@@ -149,6 +207,64 @@ public class TransactionsController extends HttpServlet{
         }
     }
 
+    
+    
+    public void processOrder(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+        try{
+           int order_id = Integer.parseInt(request.getParameter("order"));
+           String statusBefore = request.getParameter("status");
+           Order order = new Order();
+           order = order.findByOrderNo(order_id);
+           switch(statusBefore){
+               case "open":
+                   order.setStatus("new");
+                   break;
+               case "new":
+                   order.setStatus("waiting");
+                   break;
+               case "paid":
+                   order.setStatus("delivered");
+                   break;
+               case "delivered":
+                   order.setStatus("completed");
+                   break;
+               default:
+                   order.setStatus(request.getParameter("status"));
+                   break;
+           }
+           order.update();
+           RequestDispatcher dispatcher = request.getRequestDispatcher("orders?action="+LIST_ACTION);
+           dispatcher.forward(request, response);
+       }catch(IOException | NumberFormatException e){
+           System.err.println("delivered() : "+e.getMessage());
+       }
+    }
+    
+    public void processSeller(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+        try{
+           int order_id = Integer.parseInt(request.getParameter("order"));
+           String statusBefore = request.getParameter("status");
+           Order order = new Order();
+           order = order.findByOrderNo(order_id);
+           switch(statusBefore){
+               case "waiting":
+                   order.setStatus("paid");
+                   break;    
+               case "paid":
+                   order.setStatus("delivered");
+                   break;
+               default:
+                   //order.setStatus(statusBefore);
+                   break;
+           }
+           order.update();
+           RequestDispatcher dispatcher = request.getRequestDispatcher("orders?action="+LIST_ACTION);
+           dispatcher.forward(request, response);
+       }catch(IOException | NumberFormatException e){
+           System.err.println("delivered() : "+e.getMessage());
+       }
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
