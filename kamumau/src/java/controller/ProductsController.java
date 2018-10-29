@@ -66,10 +66,15 @@ public class ProductsController extends ApplicationController {
                     case "update":
                         updateProduct(request, response);
                         break;
-                    default:
+                    case "search":
+                        searchProductByName(request, response);
+                        break;
+                    case "list":
                         listProduct(request, response);
                         break;
-                    
+                    default:
+                        searchProduct(request, response);
+                        break;
                 }
             } 
             catch (SQLException ex) {
@@ -90,6 +95,29 @@ public class ProductsController extends ApplicationController {
         dispatcher.forward(request, response);
     }
     
+    private void searchProduct(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        Product p = new Product();
+        //Category c = new Category();
+        List<Product> products = p.getAllProducts();
+        //List<Category> categories = c.all();
+        //request.setAttribute("categories", categories);
+        request.setAttribute("products", products);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("products/search.jsp");
+        dispatcher.forward(request, response);
+    }
+     
+    private void searchProductByName(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+//        Product p = new Product();
+//        Category c = new Category();
+//        List<Product> products = p.getProducts();
+//        List<Category> categories = c.all();
+//        request.setAttribute("categories", categories);
+//        request.setAttribute("products", products);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("products/search.jsp");
+        dispatcher.forward(request, response);
+    }
     
     private void createProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {

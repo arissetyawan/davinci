@@ -13,6 +13,6 @@
         <title>Index</title>
     </head>
     <body>
-        <jsp:forward page="/products?action=list" />
+        <jsp:forward page="/products?action=search" />
     </body>
 </html>

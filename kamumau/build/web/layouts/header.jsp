@@ -18,6 +18,7 @@
 
     <title>KamuMau - sell or buy as you want</title>
     <!-- Bootstrap core CSS -->
+    <link href="/WEB-INF/stylesheets/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"  crossorigin="anonymous"></script>

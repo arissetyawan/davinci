@@ -78,7 +78,10 @@
 	<div class="wrap" style="margin-top:7%">
 	<section>
             <div class="container">
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <div>
+                    <a href="products?action=new" role="button" class="btn btn-primary btn-lg">Add New Product</a>
+                </div>
+                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 2%">
                     <thead>
                         <tr>
                             <th>
@@ -157,9 +160,6 @@
                                 <% no++; %>
                             </c:forEach>                                
                 </table>
-                <div>
-                    <a href="products?action=new" role="button" class="btn btn-primary btn-lg">Add New Product</a>
-                </div>
             </div>
 	</section>	
 </div>
