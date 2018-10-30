@@ -32,9 +32,9 @@ public class TestModel{
         */
         Product p = new Product();
         //Category c = new Category();
-        List<Product> products = p.getAllProducts();
+        //List<Product> products = p.getAllProducts();
         
-        System.out.println(p.getAllProducts());
+        System.out.println(p.getProductByName("ci"));
 
     }
 }

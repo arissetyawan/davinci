@@ -70,8 +70,13 @@
             </form>
           </div>
         </nav>
+        </div><div style="padding-left: 5%; margin-top: 5%">
+        <h2>
+            Add New Product
+        </h2>
+        <p>Add a new product data</p>
         </div>
-        <div class="container" style="margin-top:5%">
+        <div class="container" style="margin-top: 1%">
             <form method="POST" action='products?action=create' name="frmAddProduct" role="form">
                 <div class="form-group">
                     <label for="name">
@@ -98,7 +103,7 @@
                         Stock: <input class="form-control" type="text" name="stock" value="<c:out value="${products.stock}" />" />
                     </label>
                 </div>
-                <input type="submit" value="Submit" class="btn btn-info" />
+                <input type="submit" value="Submit" class="btn btn-primary" />
                 <input type="button" value="Back" onclick="goBack()" class="btn btn-warning" />
             </form>
         </div>

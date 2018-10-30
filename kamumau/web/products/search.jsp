@@ -21,10 +21,11 @@
 <div style="margin-top: 5%;" class="container">
     <h1 class="">Search Result  :</h1>
 </div>
-<c:forEach items="${products}" var="product">
+
 <div style="margin-top:3%; " class="container">    
     <div class="card-columns">       
         <!-- Example row of columns -->
+        <c:forEach items="${products}" var="product">
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <form method="POST" action="transactions?action=new">
@@ -35,10 +36,11 @@
             </form>
         </div>
     </div>
+            </c:forEach> 
     </div>
   <hr>
 </div> <!-- /container -->
- </c:forEach> 
+ 
 </main>
 
 <%@include file= "/layouts/footer.html" %>

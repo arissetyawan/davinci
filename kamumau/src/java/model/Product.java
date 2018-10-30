@@ -232,21 +232,27 @@ public class Product extends MyConnection{
     }
     
     
-    public Product Search(String param){
-        Product p = new Product();
-        String query = "SELECT * FROM product WHERE name like '" + param + "'%";
+    public ArrayList<Product> getProductByName(String param){
+        ArrayList<Product> products = new ArrayList<>();
+        String query = "select p.id as product_id , p.name as name, c.name as category, "
+                + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p "
+                + "inner join categories c on p.category_id = c.category_id "
+                + "where p.name like '"+param+"%' order by c.name, p.id";
         try {
             Statement stmt = this.conn().createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            if (rs.next()) {
+            while (rs.next()) {
+                Product p = new Product();
                 p.setName(rs.getString("name"));
                 p.setCategory_id(rs.getString("category"));
                 p.setPrice(rs.getFloat("price"));
+                
+                products.add(p);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return p;
+        return products;
     }
 
     

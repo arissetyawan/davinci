@@ -111,12 +111,13 @@ public class ProductsController extends ApplicationController {
      
     private void searchProductByName(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-//        Product p = new Product();
-//        Category c = new Category();
-//        List<Product> products = p.getProducts();
-//        List<Category> categories = c.all();
-//        request.setAttribute("categories", categories);
-//        request.setAttribute("products", products);
+        String pname = request.getParameter("product");
+        Product p = new Product();
+        Category c = new Category();
+        List<Product> products = (List<Product>) p.getProductByName(pname);
+        List<Category> categories = c.all();
+        request.setAttribute("categories", categories);
+        request.setAttribute("products", products );
         RequestDispatcher dispatcher = request.getRequestDispatcher("products/search.jsp");
         dispatcher.forward(request, response);
     }
