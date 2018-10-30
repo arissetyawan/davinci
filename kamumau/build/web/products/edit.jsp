@@ -75,8 +75,9 @@
         <h2>
             Edit Product
         </h2>
-        <p>Edit product data</p>
+        <p>Edit a product data</p>
         </div>
+        <hr>
         <div class="container" style="margin-top: 1%">
             <form method="POST" action='products?action=update' name="frmAddProduct" role="form"> 
                 <div class="form-group">

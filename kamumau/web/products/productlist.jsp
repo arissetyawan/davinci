@@ -44,7 +44,7 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="products?action=all">Home</a>
           </li>
           <li class="nav-item dropdown active">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
@@ -74,7 +74,7 @@
     <div>
         <div style="padding-left: 15px; margin-top: 4%">
         <h2>
-            Product(s) List
+            List of Products
         </h2>
         <p>List all products that in stock and products that have zero stock</p>
     </div>

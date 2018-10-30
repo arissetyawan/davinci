@@ -70,12 +70,14 @@
             </form>
           </div>
         </nav>
-        </div><div style="padding-left: 5%; margin-top: 5%">
+        </div>
+        <div style="padding-left: 5%; margin-top: 5%">
         <h2>
             Add New Product
         </h2>
         <p>Add a new product data</p>
         </div>
+        <hr>
         <div class="container" style="margin-top: 1%">
             <form method="POST" action='products?action=create' name="frmAddProduct" role="form">
                 <div class="form-group">

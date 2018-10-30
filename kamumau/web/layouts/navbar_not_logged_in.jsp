@@ -24,7 +24,7 @@
         </div>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="#">Products</a>
+        <a class="nav-link" href="products?action=list">Products</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="#">Sign In</a>
