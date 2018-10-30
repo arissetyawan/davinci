@@ -67,7 +67,7 @@ CREATE TABLE `feedbacks` (
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `no` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `seller_id` int(11) NOT NULL,
   `buyer_id` int(11) NOT NULL,
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL,
