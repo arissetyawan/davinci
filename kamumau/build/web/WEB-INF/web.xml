@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>PeopleController</servlet-name>
-        <servlet-class>controller.PeopleController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CategoriesController</servlet-name>
         <servlet-class>controller.CategoriesController</servlet-class>
     </servlet>
@@ -20,18 +16,13 @@
         <servlet-name>TransactionsController</servlet-name>
         <servlet-class>controller.TransactionsController</servlet-class>
     </servlet>
-
-    <servlet-mapping>
-        <servlet-name>PeopleController</servlet-name>
-        <url-pattern>/people</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CategoriesController</servlet-name>
         <url-pattern>/categories</url-pattern>
     </servlet-mapping>
      <servlet-mapping>
         <servlet-name>ProductsController</servlet-name>
-        <url-pattern>/products</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrdersController</servlet-name>

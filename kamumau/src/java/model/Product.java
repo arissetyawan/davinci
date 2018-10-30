@@ -129,7 +129,11 @@ public class Product extends MyConnection{
         
         return true;
     }
-    
+
+    public void setUserId(int id){
+        this.user_id= id;
+    }
+
     public ArrayList<Product> getProducts() throws SQLException{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p inner join "
@@ -151,6 +155,7 @@ public class Product extends MyConnection{
                 products.add(p);
             }
             rs.close();
+            this.conn().close();
         }catch(SQLException e){
             System.err.println("getProducts() : "+e.getMessage());
         }
@@ -201,10 +206,11 @@ public class Product extends MyConnection{
                 p.setPrice(rs.getFloat("price"));
                 p.setStock(rs.getInt("stock"));
                 p.setUpdated_at(rs.getString("updated_at"));
-                
                 products.add(p);
             }
             rs.close();
+            this.conn().close();
+
         }catch(SQLException e){
             System.err.println("getProducts() : "+e.getMessage());
         }
@@ -212,7 +218,7 @@ public class Product extends MyConnection{
     }
     
     public Product getProductByID(int id) throws SQLException{
-        String query = "select * from products where id='"+id+"'";
+        String query = "select * from products where id='"+id+"'"; // int ko pada pake '' sbg string?
         
         Product p = new Product();
         ResultSet rs;
@@ -231,7 +237,8 @@ public class Product extends MyConnection{
         return p;
     }
     
-    
+    // ini ngawur pake like tapi return valuenya bukan array !
+    // tapi single Product???
     public Product Search(String param){
         Product p = new Product();
         String query = "SELECT * FROM product WHERE name like '" + param + "'%";

@@ -49,7 +49,7 @@ public class MyConnection {
             System.out.println("Connecting...");
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
             this.conn= DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/jspmvcjdbc", "root", "");
+                    "jdbc:mysql://localhost:3306/database_d", "root", "root");
             System.out.println("Connected");
         } catch (SQLException ex) {
             Logger.getLogger(MyConnection.class.getName()).log(Level.SEVERE, null, ex);
