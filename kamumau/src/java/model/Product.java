@@ -230,4 +230,24 @@ public class Product extends MyConnection{
                
         return p;
     }
+    
+    
+    public Product Search(String param){
+        Product p = new Product();
+        String query = "SELECT * FROM product WHERE name like '" + param + "'%";
+        try {
+            Statement stmt = this.conn().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                p.setName(rs.getString("name"));
+                p.setCategory_id(rs.getString("category"));
+                p.setPrice(rs.getFloat("price"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return p;
+    }
+
+    
 }
