@@ -13,7 +13,6 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Category;
@@ -228,7 +227,6 @@ public class ProductsController extends ApplicationController {
         }
         else{
             message= "product was not deleted";
-            System.out.println("errorrrrrrrrr");
         }    
         request.setAttribute("message", message);
         response.sendRedirect("products?action="+list_action); 
