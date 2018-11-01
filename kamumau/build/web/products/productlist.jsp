@@ -179,31 +179,31 @@
             </thead>
             <tbody>
             <% int n =1; %>
-                        <c:forEach items="${productsZero}" var="productsZero">
+                        <c:forEach items="${productsZero}" var="pz">
                             
                             <tr onmouseover="ChangeColor(this, true);"
                               onmouseout="ChangeColor(this, false);">
                                 <td>
-                                    <% out.print(no); %>
+                                    <% out.print(n); %>
                                 </td>
                                 <td>
-                                    <c:out value="${productsZero.name}"/>
+                                    <c:out value="${pz.name}"/>
                                 </td>
                                 <td>
-                                    <c:out value="${productsZero.category_id}"/>
+                                    <c:out value="${pz.category_id}"/>
                                 </td>
                                 <td>
-                                    Rp <c:out value="${productsZero.price}"/>
+                                    Rp <c:out value="${pz.price}"/>
                                 </td>
                                 <td>
-                                    <c:out value="${productsZero.stock}"/> Pcs
+                                    <c:out value="${pz.stock}"/> Pcs
                                 </td>
                                 <td>
-                                    <c:out value="${productsZero.updated_at}"/>
+                                    <c:out value="${pz.updated_at}"/>
                                 </td>
                                     <td>
-                                        <a href="products?action=edit&id=<c:out value="${products.product_id}"/>" class="btn btn-outline-info btn-sm">Edit</a>
-                                        <a onclick="return confirm('Are you sure ?')" href="products?action=delete&id=<c:out value="${products.product_id}"/>" class="btn btn-outline-danger btn-sm">Delete</a>
+                                        <a href="products?action=edit&id=<c:out value="${pz.product_id}"/>" class="btn btn-outline-info btn-sm">Edit</a>
+                                        <a onclick="return confirm('Are you sure ?')" href="products?action=delete&id=<c:out value="${pz.product_id}"/>" class="btn btn-outline-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                                 <% n++; %>

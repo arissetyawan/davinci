@@ -88,11 +88,11 @@ public class ProductsController extends ApplicationController {
         Product p = new Product();
         Category c = new Category();
         List<Product> products = p.getProducts();
-        //List<Product> productsZero = p.getProductsZeroStock();
+        List<Product> productsZero = p.getProductsZeroStock();
         List<Category> categories = c.all();
         request.setAttribute("categories", categories);
         request.setAttribute("products", products);
-        //request.setAttribute("productsZero", productsZero); //zero stock still error
+        request.setAttribute("productsZero", productsZero); //zero stock still error
         RequestDispatcher dispatcher = request.getRequestDispatcher("products/productlist.jsp");
         dispatcher.forward(request, response);
     }

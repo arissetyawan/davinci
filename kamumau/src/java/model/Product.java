@@ -30,7 +30,7 @@ public class Product extends MyConnection{
     protected String updated_at;
     protected int owner;
     
-    public int user_id=2;
+    public int user_id=1;
             
     public Product(){
         super();
@@ -143,7 +143,7 @@ public class Product extends MyConnection{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p inner join "
                 + "categories c on p.category_id = c.category_id inner join users u on p.owner = u.id "
-                + "where p.owner = "+user_id+" order by c.name, p.id"; //user_id hardcoded
+                + "where p.owner = "+user_id+" and stock <> 0 order by c.name, p.id"; //user_id hardcoded
         ArrayList<Product> products = new ArrayList<>();
         ResultSet rs;
         try(Statement st = this.conn().createStatement()){
@@ -197,7 +197,7 @@ public class Product extends MyConnection{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at, p.owner as owner from products p "
                 + "inner join categories c on p.category_id = c.category_id inner join "
-                + "users u on p.owner = u.id order by c.name, p.id";
+                + "users u on p.owner = u.id where p.owner <> "+user_id+" order by c.name, p.id";
         ArrayList<Product> products = new ArrayList<>();
         ResultSet rs;
         try(Statement st = this.conn().createStatement()){
