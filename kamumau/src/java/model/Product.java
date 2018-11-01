@@ -28,13 +28,18 @@ public class Product extends MyConnection{
     protected float price;
     protected int stock;
     protected String updated_at;
+    protected int owner;
     
-    public int user_id=1;
+    public int user_id=2;
             
     public Product(){
         super();
     }
 
+    public int getOwner() {
+        return owner;
+    }
+    
     public int getProduct_id() {
         return product_id;
     }
@@ -51,6 +56,10 @@ public class Product extends MyConnection{
         return price;
     }
 
+    public void setOwner(int owner) {
+        this.owner = owner;
+    }
+    
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
@@ -186,7 +195,7 @@ public class Product extends MyConnection{
     
     public ArrayList<Product> getAllProducts() throws SQLException{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
-                + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p "
+                + "p.price as price, p.stock as stock , p.updated_at as updated_at, p.owner as owner from products p "
                 + "inner join categories c on p.category_id = c.category_id inner join "
                 + "users u on p.owner = u.id order by c.name, p.id";
         ArrayList<Product> products = new ArrayList<>();
@@ -201,7 +210,7 @@ public class Product extends MyConnection{
                 p.setPrice(rs.getFloat("price"));
                 p.setStock(rs.getInt("stock"));
                 p.setUpdated_at(rs.getString("updated_at"));
-                
+                p.setOwner(rs.getInt("owner"));
                 products.add(p);
             }
             rs.close();

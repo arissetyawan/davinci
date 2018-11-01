@@ -28,7 +28,10 @@
         <c:forEach items="${products}" var="product">
     <div class="card" style="width: 18rem;">
         <div class="card-body">
-            <form method="POST" action="transactions?action=new">
+            <form action="transactions?action=create" method="POST">
+            <input class="form-control" type="hidden" id="id_product" name="id_product" value="<c:out value="${product.product_id}" />" />
+            <input class="form-control" type="hidden" id="id_seller" name="id_seller" value="<c:out value="${product.owner}" />" />
+            <input class="form-control" type="hidden" id="qty" name="qty" value="1" />
             <h4 align="center" class="card-title"><c:out value="${product.name}"/></h4>
             <h5 class="card-title"><c:out value="${product.category_id}"/></h5>
             <p class="card-text">Rp <c:out value="${product.price}"/></p>
