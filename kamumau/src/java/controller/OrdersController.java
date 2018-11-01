@@ -11,15 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Order;
 
-public class OrdersController extends HttpServlet{
+public class OrdersController extends ApplicationController{
     private final static String ADD_ACTION = "new";
     private final static String DELETE_ACTION = "delete";
     private final static String EDIT_ACTION = "edit";
     private final static String LIST_ACTION = "lists";
     private String message= "";
-    private static final int USER_ID = 1; //untuk sementara sebagai user yg sedang login
+    private static final int USER_ID = 2; //untuk sementara sebagai user yg sedang login
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 String action = request.getParameter("action");
@@ -37,8 +38,10 @@ public class OrdersController extends HttpServlet{
                     case "update":
                         updateOrder(request, response);
                         break;
+                    case "cancel":
+                        cancelOrder(request, response);
+                        break;
                     default:
-                        //listOrder(request, response);
                         listOrderWithChoose(request, response);
                         break;
                 }
@@ -75,10 +78,28 @@ public class OrdersController extends HttpServlet{
         }
     }
     
+    private void cancelOrder(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        int no = Integer.parseInt(request.getParameter("no"));
+        String status = "cancelled";
+        Order o = new Order();
+        o = o.find(no);
+        o.setStatus(status);
+        if (o.update()){
+            message= "order updated";     
+            request.setAttribute("message", message);
+            response.sendRedirect("orders?action="+LIST_ACTION);
+        }else{
+            message= "order failed to updated";     
+            request.setAttribute("message", message);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("orders?action="+ EDIT_ACTION);
+            dispatcher.forward(request, response);
+        }
+    }
+    
+    
     private void createOrder(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        //Silakan kelompok product tembak method ini
         Order order = new Order();
-        order.setUser_id(USER_ID); // << USER_ID adl user yang sedang login 
+        order.setUser_id(USER_ID);
         if (order.create()){
             message= "new order added";                    
             request.setAttribute("message", message);

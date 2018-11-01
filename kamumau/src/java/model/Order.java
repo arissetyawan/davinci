@@ -67,8 +67,6 @@ public class Order extends MyConnection{
         this.id = id;
     }
 
-    
-    
     public int getNo() {
         return no;
     }
@@ -275,11 +273,11 @@ public class Order extends MyConnection{
     }
     
     public boolean delete() {
-        String query = "DELETE FROM " + tableName + " WHERE id = " + this.id;
         try {
+            String query = "DELETE FROM "+ tableTransaction+ " WHERE id_order = " + this.no;
             Statement stmt = this.conn().createStatement();
             stmt.executeUpdate(query);
-            query = "DELETE FROM "+ tableTransaction+ " WHERE id_order = " + this.no;
+            query = "DELETE FROM " + tableName + " WHERE id = " + this.id;
             Statement st = this.conn().createStatement();
             return st.executeUpdate(query) > 1;
         } catch (SQLException e) {
@@ -288,26 +286,7 @@ public class Order extends MyConnection{
         }
     }
     
-    public Order findByOrderNo(int no){
-        String query = "SELECT * FROM " + tableName + " WHERE no = " + no + " ";
-        Order order = new Order();
-        try {
-            Statement stmt = this.conn().createStatement();
-            ResultSet res = stmt.executeQuery(query);
-            if (res.next()) {
-                order.setId(res.getInt("id"));
-                order.setNo(res.getInt("no"));
-                order.setUser_id(res.getInt("user_id"));
-                order.setBuyer_id(res.getInt("buyer_id"));
-                order.setStatus(res.getString("status"));
-                order.setCreated_at(res.getDate("created_at"));
-                order.setUpdated_at(res.getDate("updated_at"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return order;
-    }
+   
     public Order find(int no){
         String query = "SELECT * FROM " + tableName + " WHERE no = " + no + " ";
         Order order = new Order();
@@ -329,36 +308,7 @@ public class Order extends MyConnection{
         return order;
     }
 
-    /*public Order initOrCeate(int user_id){
-        String query = "SELECT * FROM " + tableName + " WHERE user_id = " + user_id + " AND status='open'";
-        Order order = new Order();
-        String now_date= generateDate();
-        try {
-            Statement stmt = this.conn().createStatement();
-            ResultSet res = stmt.executeQuery(query);
-            if (res.next()) {
-                order.setId(res.getInt("id"));
-                order.setNo(res.getInt("no"));
-                order.setUser_id(res.getInt("user_id"));
-                order.setStatus(res.getString("status"));
-                order.setCreated_at(res.getDate("created_at"));
-                order.setUpdated_at(res.getDate(now_date));                
-            }else{
-                order.setUser_id(user_id);
-                if(order.create()){
-                   order= order.findByOrderNo(order.getNo());
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return order;
-    }*/
-   
-
-    
-    
-    
+       
     public boolean create() {
         String now_date= generateDate();
         String status= "open";

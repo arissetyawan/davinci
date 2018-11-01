@@ -22,19 +22,7 @@
         function DoNav(theUrl){
             document.location.href = theUrl;
         }
-        
-        function DeleteOrder(url){
-            document.location.href = url;    
-        }
-        
-        function tableCondition(values){
-            if(values === "My orders"){
-               document.location.href = "orders?action=list&choose=out";
-            }else if(values === "Incoming orders"){
-               document.location.href = "orders?action=list&choose=in";
-            }
-        }
-        
+                
         </script>
         
         
@@ -70,13 +58,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>ID</th>
-                    <th>Order</th>
+                    <th>Order</th>
                     <th>Seller name</th>
                     <th>Created on</th>
                     <th>Last updated</th>
-                    <th>Status</th>
-                    <th>Actions</th>    
+                    <th>Actions</th>    
                 </tr>
             </thead>
             <tbody>
@@ -86,14 +72,12 @@
                               onmouseover="ChangeColor(this, true);"
                               onmouseout="ChangeColor(this, false);">
                     <td><%=i %></td>
-                    <td><c:out value="${mycart.id}" /></td>
-                    <td><c:out value="${mycart.no}" /></td>
+                    <td><c:out value="${mycart.no}" /></td>
                     <td><c:out value="${mycart.user_name}" /></td>
                     <td><c:out value="${mycart.created_at}"/></td>
                     <td><c:out value="${mycart.updated_at}"/></td>
-                    <td><c:out value="${mycart.status}"/></td>
                     <td>
-                        <a type="button" class="btn btn-danger" href="orders?action=delete&id=<c:out value='${mycart.getId()}' />&no=<c:out value='${mycart.getNo()}' />" 
+                        <a class="btn btn-outline-danger btn-sm" href="orders?action=delete&id=<c:out value='${mycart.getId()}' />&no=<c:out value='${mycart.getNo()}' />" 
                            onclick="return confirm('Are you sure?  The items on this bucket will be deleted too')">Delete</a>
                     </td>
                 
@@ -131,10 +115,15 @@
                     <td><c:out value="${order.created_at}"/></td>
                     <td><c:out value="${order.updated_at}"/></td>
                     <td><c:out value="${order.status}"/></td>
-                    <td>
-                        <a type="button" class="btn btn-danger" href="orders?action=delete&id=<c:out value='${order.getId()}' />&no=<c:out value='${order.getNo()}' />" 
-                           onclick="return confirm('Are you sure?  The items on this bucket will be deleted too')">Delete</a>
+                    <c:choose>
+                    <c:when test="${order.getStatus() != 'cancelled'}">
+                                            <td>
+                        <a class="btn btn-outline-danger btn-danger btn-sm" href="orders?action=cancel&no=<c:out value='${order.getNo()}' />" 
+                           onclick="return confirm('Are you sure to cancel this order?')">Cancel this order</a>
                     </td>
+
+                    </c:when>
+                    </c:choose>
                 
             </tr>
             <% ix++; %>
@@ -154,7 +143,6 @@
                     <th>Seller name</th>
                     <th>Created on</th>
                     <th>Last updated</th>
-                    <th>Status</th>
                     <th>Feedback</th>
                 </tr>
             </thead>
@@ -170,9 +158,8 @@
                     <td><c:out value="${completed.user_name}" /></td>
                     <td><c:out value="${completed.created_at}"/></td>
                     <td><c:out value="${completed.updated_at}"/></td>
-                    <td><c:out value="${completed.status}"/></td>
                     <td>
-                        <a type="button" class="btn btn-secondary" href="orders?action=delete&id=<c:out value='${completed.getId()}' />&no=<c:out value='${completed.getNo()}' />" 
+                        <a class="btn btn-outline-success btn-secondary btn-sm" href="orders?action=delete&id=<c:out value='${completed.getId()}' />&no=<c:out value='${completed.getNo()}' />" 
                            onclick="return confirm('Are you sure?  The items on this bucket will be deleted too')">Feedback</a>
                     </td>                
             </tr>
@@ -180,6 +167,9 @@
             </c:forEach>
             </tbody>
         </table>
+            <div align="center">
+                <p>Only completed orders will be showed here</p>
+            </div>
     </div>
     
     <div class="tab-pane" id="myorders" role="tabpanel" aria-labelledby="myorders-tab">
@@ -208,7 +198,7 @@
                     <td><c:out value="${outcoming.updated_at}"/></td>
                     <td><c:out value="${outcoming.status}"/></td>
                     <td>
-                        <a type="button" class="btn btn-danger" href="orders?action=delete&id=<c:out value='${outcoming.getId()}' />&no=<c:out value='${outcoming.getNo()}' />" 
+                        <a class="btn btn-outline-danger btn-danger btn-sm" href="orders?action=cancel&no=<c:out value='${outcoming.getNo()}' />" 
                            onclick="return confirm('Are you sure?  Your payment will be void')">Cancel</a>
 
                     </td>                
@@ -217,6 +207,10 @@
             </c:forEach>
             </tbody>
         </table>
+            <div align="center">
+                <p>In process order will be showed here. You can track them</p>
+            </div>
+
     </div>
 
 </div>
@@ -235,10 +229,6 @@
 </script>
 
 
-
-
-<a class="btn btn-primary" href="transactions?action=new">Add</a>
-            
     </body>
         
    

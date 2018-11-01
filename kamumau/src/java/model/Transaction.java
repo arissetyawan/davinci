@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
 TABLE NAME transaction
@@ -91,7 +93,6 @@ public class Transaction extends MyConnection{
         String query = "SELECT t.id, t.id_order, t.id_product, p.name, t.qty, t.total "
                 + "FROM "+TABLE_NAME+" t INNER JOIN products p ON t.id_product = p.id WHERE id_order = "+ order_id;
         
-        
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
             Statement stmt = this.conn().createStatement();
@@ -172,7 +173,6 @@ public class Transaction extends MyConnection{
     
     
     public boolean initOrCeate(Transaction trans, int user_id,int seller_id){
-        //Kelompok product bisa lihat method ini
         String query = "SELECT * FROM " + TABLE_NAME_ORDER + " WHERE user_id = " + seller_id + 
                 " AND buyer_id = "+user_id+" AND status='open'";
         try {
@@ -214,10 +214,13 @@ public class Transaction extends MyConnection{
     
     
     public boolean create() {
-        float price = getPrice();
-        String query = "INSERT INTO "+ TABLE_NAME +" (id_order, id_product, qty, total) "
-                + "values ('" + this.id_order + "', '" + this.id_product  + "', '" +  this.qty  + "', '"+ price + "')";
         try {
+            Product product = new Product();
+            product = product.getProductByID(this.getId_product());
+            int price =  (int) product.getPrice();
+            String query = "INSERT INTO "+ TABLE_NAME +" (id_order, id_product, qty, total) "
+                + "values ('" + this.id_order + "', '" + this.id_product  + "', '" +  this.qty  + "', '"+ price + "')";
+
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query) > 0;
         } catch (SQLException e) {
@@ -229,10 +232,13 @@ public class Transaction extends MyConnection{
     
     public boolean updateQuantityOnly(){
         try {
+            Product product = new Product();
+            product = product.getProductByID(this.getId_product());
+            int price =  (int) product.getPrice();
             Transaction tr = new Transaction();
             tr = getExistedItem(this.id_order, this.id_product);
             String query = "UPDATE "+ TABLE_NAME +  " SET qty = "+ (tr.getQty()+1) +", total = "+
-                    (getPrice() + getPrice()) +" WHERE id = " + tr.getId() +"";    
+                    (tr.getTotal() + price) +" WHERE id = " + tr.getId() +"";    
             System.out.println(query);
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query) > 0;
@@ -243,29 +249,15 @@ public class Transaction extends MyConnection{
     }
     
     
-    public float getPrice(){
-        try{
-            String query = "select price from products where id = "+this.getId_product()+"";
-            Statement stmt = this.conn().createStatement();
-            ResultSet res = stmt.executeQuery(query);
-            if(res.next()){
-                return res.getFloat("price");
-            }else{
-                return -1;
-            }
-        }catch(SQLException e){
-            System.err.println("getPrice() : "+ e.getMessage());
-            return -1;
-        }
-    }
-    
     
     public boolean update() {
-        float price =  getPrice();
-        price *= this.qty;
-        String query = "UPDATE "+ TABLE_NAME + " SET id_product='"+ this.id_product + 
-                "', qty = '"+ this.qty +"', total = '"+price+"' WHERE id = " + this.id;
         try {
+            Product product = new Product();
+            product = product.getProductByID(this.getId_product());
+            int price =  (int) product.getPrice();
+            price *= this.qty;
+            String query = "UPDATE "+ TABLE_NAME + " SET id_product='"+ this.id_product + 
+                "', qty = '"+ this.qty +"', total = '"+price+"' WHERE id = " + this.id;
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query) > 0;
         } catch (SQLException e) {
