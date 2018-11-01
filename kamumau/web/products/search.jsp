@@ -21,7 +21,7 @@
 <div style="margin-top: 5%;" class="container">
     <h1 class="">Search Result  :</h1>
 </div>
-
+<hr>
 <div style="margin-top:3%; " class="container">    
     <div class="card-columns">       
         <!-- Example row of columns -->

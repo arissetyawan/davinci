@@ -215,4 +215,5 @@
 <div>
     <a href="products?action=new" role="button" class="btn btn-primary btn-lg" style="margin-left: 3%">Add New Product</a>
 </div>
+<hr>
 <%@include file= "/layouts/footer.html" %>
