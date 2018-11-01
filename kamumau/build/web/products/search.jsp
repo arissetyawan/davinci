@@ -35,7 +35,7 @@
             <h4 align="center" class="card-title"><c:out value="${product.name}"/></h4>
             <h5 class="card-title"><c:out value="${product.category_id}"/></h5>
             <p class="card-text">Rp <c:out value="${product.price}"/></p>
-            <input type="submit" value="Buy" class="btn btn-primary" />
+            <input type="submit" value="Buy" style="float: right; margin-bottom: 10%" class="btn btn-primary" />
             </form>
         </div>
     </div>

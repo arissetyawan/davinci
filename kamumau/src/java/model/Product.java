@@ -30,7 +30,7 @@ public class Product extends MyConnection{
     protected String updated_at;
     protected int owner;
     
-    public int user_id=1;
+    public int user_id=2; //hardcoded user_id
             
     public Product(){
         super();
@@ -197,7 +197,7 @@ public class Product extends MyConnection{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at, p.owner as owner from products p "
                 + "inner join categories c on p.category_id = c.category_id inner join "
-                + "users u on p.owner = u.id where p.owner <> "+user_id+" order by c.name, p.id";
+                + "users u on p.owner = u.id where p.owner <> "+user_id+" and p.stock <> 0 order by c.name, p.id";
         ArrayList<Product> products = new ArrayList<>();
         ResultSet rs;
         try(Statement st = this.conn().createStatement()){
@@ -246,7 +246,31 @@ public class Product extends MyConnection{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p "
                 + "inner join categories c on p.category_id = c.category_id "
-                + "where p.name like '"+param+"%' order by c.name, p.id";
+                + "where p.name like '"+param+"%' and p.owner <> "+user_id+" and p.stock <> 0 order by c.name, p.id";
+        try {
+            Statement stmt = this.conn().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Product p = new Product();
+                p.setName(rs.getString("name"));
+                p.setCategory_id(rs.getString("category"));
+                p.setPrice(rs.getFloat("price"));
+                
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return products;
+    }
+    
+    
+    public ArrayList<Product> getProductByCategory(int id){
+        ArrayList<Product> products = new ArrayList<>();
+        String query = "select p.id as product_id , p.name as name, c.name as category, "
+                + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p "
+                + "inner join categories c on p.category_id = c.category_id "
+                + "where c.category_id like '"+id+"%' and p.owner <> "+user_id+" and p.stock <> 0 order by c.name, p.id";
         try {
             Statement stmt = this.conn().createStatement();
             ResultSet rs = stmt.executeQuery(query);

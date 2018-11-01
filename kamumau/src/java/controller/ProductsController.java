@@ -69,6 +69,9 @@ public class ProductsController extends ApplicationController {
                     case "search":
                         searchProductByName(request, response);
                         break;
+                    case "search-by-category":
+                        searchProductByCategory(request, response);
+                        break;
                     case "list":
                         listProduct(request, response);
                         break;
@@ -100,10 +103,10 @@ public class ProductsController extends ApplicationController {
     private void searchProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         Product p = new Product();
-        //Category c = new Category();
+        Category c = new Category();
         List<Product> products = p.getAllProducts();
-        //List<Category> categories = c.all();
-        //request.setAttribute("categories", categories);
+        List<Category> categories = c.all();
+        request.setAttribute("categories", categories);
         request.setAttribute("products", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("products/search.jsp");
         dispatcher.forward(request, response);
@@ -115,6 +118,19 @@ public class ProductsController extends ApplicationController {
         Product p = new Product();
         Category c = new Category();
         List<Product> products = p.getProductByName(pname);
+        List<Category> categories = c.all();
+        request.setAttribute("categories", categories);
+        request.setAttribute("products", products );
+        RequestDispatcher dispatcher = request.getRequestDispatcher("products/search.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void searchProductByCategory(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        int pname = Integer.parseInt(request.getParameter("id"));
+        Product p = new Product();
+        Category c = new Category();
+        List<Product> products = p.getProductByCategory(pname);
         List<Category> categories = c.all();
         request.setAttribute("categories", categories);
         request.setAttribute("products", products );
@@ -190,9 +206,7 @@ public class ProductsController extends ApplicationController {
         if (p.updateProduct(p)){
             message= "product updated";     
             request.setAttribute("message", message);
-            List<Product> products = p.getProducts();
-            request.setAttribute("products", products);
-            request.getRequestDispatcher("products/productlist.jsp").include(request, response);
+            listProduct(request, response);
         }
         else{
             message= "product failed to updated";     

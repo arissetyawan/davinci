@@ -18,6 +18,15 @@
 
     <title>KamuMau - sell or buy as you want</title>
     <!-- Bootstrap core CSS -->
+   <script type="text/javascript">
+        function ChangeColor(tableRow, highLight) {
+                if (highLight) {
+                    tableRow.style.backgroundColor = '#B2EBF2';
+                }else {
+                    tableRow.style.backgroundColor = 'white';
+                }
+            }
+    </script>
     <link href="/WEB-INF/stylesheets/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
