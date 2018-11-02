@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.1
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 01, 2018 at 08:47 PM
--- Server version: 10.1.33-MariaDB
--- PHP Version: 7.2.6
+-- Host: localhost
+-- Generation Time: Nov 02, 2018 at 12:06 PM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 7.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -127,16 +127,16 @@ CREATE TABLE `users` (
   `fullname` varchar(50) NOT NULL,
   `address` text NOT NULL,
   `bankname` varchar(20) NOT NULL,
-  `accountno` varchar(20) NOT NULL
+  `accountno` varchar(20) NOT NULL,
+  `created_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `fullname`, `address`, `bankname`, `accountno`) VALUES
-(1, 'qodim.is30@gmail.com', '12345', 'qodim ibnu salam', 'Jl. kita udah beda no.123', 'Ke', '12345'),
-(2, 'hwijayanti901@gmail.com', '12345', 'hikmah wijayanti', 'jl. in aja dulu ea no.123', 'BRI', '12345');
+INSERT INTO `users` (`id`, `email`, `password`, `fullname`, `address`, `bankname`, `accountno`, `created_at`) VALUES
+(3, 'test02@gmail.com', 'wew', 'test', 'tegal', 'BCA', '12345', '2018-11-02');
 
 --
 -- Indexes for dumped tables
@@ -159,8 +159,7 @@ ALTER TABLE `feedbacks`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `no` (`no`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `products`
@@ -173,8 +172,7 @@ ALTER TABLE `products`
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_order` (`id_order`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -202,7 +200,7 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -214,13 +212,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -231,12 +229,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `fk_cat` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
-
---
--- Constraints for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `fk_order` FOREIGN KEY (`id_order`) REFERENCES `orders` (`no`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
