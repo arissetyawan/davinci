@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+ <table>
+            <tr><td>Email</td>
+                <td><input type="text" class="form-control" name="email" value="<c:out value='${user.getEmail()}'/>"/></td></tr>
+            <tr><td>Password</td> 
+                <td><input type="password" class="form-control" name="password" id="password" value="<c:out value='${user.getPassword()}' />"/></td></tr>
+            <tr><td>ReTypePassword</td>
+                <td><input type="password" class="form-control" name="repassword" id="repassword"  value="<c:out value='${user.geRetpassword()}' />" /> <span id='message'></span></td></tr>
+            <tr><td>Full Name</td>
+                <td><input type="text" class="form-control" name="fullname" value="<c:out value='${user.getFullname()}' />"/></td></tr>
+            <tr><td>Address</td>
+                <td><input type="text" class="form-control" name="address" value="<c:out value='${user.getAddress()}' />"/></td></tr>
+            <tr><td>Bank Name</td>
+                <td><select name="bankname" style="width: 155px">
+                        <option>BCA</option>
+                        <option>BRI</option>
+                        <option>MANDIRI</option>
+                        <option>CIMB</option>
+                    </select>
+                </td></tr>
+            <tr><td>Account No</td>
+                <td><input type="text" class="form-control" name="accountno" value="<c:out value='${user.getAccountno()}' />"/></td></tr>
+            <tr><td colspan="2"><input type="submit" value="SignUP"/></td></tr>   
+           
+            
+        </table>
