@@ -18,15 +18,6 @@
 
     <title>KamuMau - sell or buy as you want</title>
     <!-- Bootstrap core CSS -->
-   <script type="text/javascript">
-        function ChangeColor(tableRow, highLight) {
-                if (highLight) {
-                    tableRow.style.backgroundColor = '#B2EBF2';
-                }else {
-                    tableRow.style.backgroundColor = 'white';
-                }
-            }
-    </script>
     <link href="/WEB-INF/stylesheets/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
@@ -35,10 +26,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"   crossorigin="anonymous"></script>
   </head>
 
-  <body>
+      <body class="text-center">
+    <% 
+    if (session.getAttribute("current_user") !=null) { %>
+        <jsp:include page="/layouts/navbar_logged_in.jsp" flush="true"/>
+    <% } else { %> 
+        <jsp:include page="/layouts/navbar_not_logged_in.jsp" flush="true"/>
+      <% } %>
+
     <!-- if not logged in -->
-    <%@include file= "/layouts/navbar_not_logged_in.jsp" %>
+   
     <!-- if logged in -->
     <!-- %@include file= "/layouts/navbar_not_logged_in.jsp" % -->
-
-    

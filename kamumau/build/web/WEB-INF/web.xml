@@ -20,6 +20,10 @@
         <servlet-name>TransactionsController</servlet-name>
         <servlet-class>controller.TransactionsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FeedbacksController</servlet-name>
+        <servlet-class>controller.FeedbacksController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>PeopleController</servlet-name>
@@ -40,6 +44,10 @@
     <servlet-mapping>
         <servlet-name>TransactionsController</servlet-name>
         <url-pattern>/transactions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedbacksController</servlet-name>
+        <url-pattern>/feedbacks</url-pattern>
     </servlet-mapping>
     
     <session-config>

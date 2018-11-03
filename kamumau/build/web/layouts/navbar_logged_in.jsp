@@ -29,6 +29,12 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="users?action=profile">My Profile</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="users?action=logout">Sign Out</a>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
@@ -36,3 +42,4 @@
     </form>
   </div>
 </nav>
+<h1><% out.println("Debugged Logged User: " + session.getAttribute("current_user")); %></h1>

@@ -54,14 +54,22 @@
             </tbody>
         </table>
     </div>
-    <div align="left">
-        <h3>    <c:out value="${buyer_id}" /></h3>
-    
+    <div align="left"  style="padding: 1%">
+        <h3><c:out value="Buyer name ${user.fullname}" /></h3>
     </div>
     <div align="right" style="margin: 5%">
+    
+    <c:choose>
+        <c:when test="${order.getStatus() != 'cancelled'}">
         <a class="btn btn-primary" href="transactions?action=processseller&order=<c:out value='${order.getNo()}' />&status=<c:out value='${order.getStatus()}' />"><c:out value="${act}" /></a>
         <a class="btn btn-danger" href="#">Cancel</a>
+    </c:when>
+        <c:otherwise>
+            <a disabled class="btn btn-outline-danger"><c:out value="${act}" /></a>
+        </c:otherwise>
+    </c:choose>
     </div>
-
+            
+    
     </body>
 </html>

@@ -32,8 +32,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>ID</th>
-                    <th>Order no</th>
+                    <th>Order no</th>
                     <th>Product name</th>
                     <th>Qty</th>
                     <th>Total</th>
@@ -47,20 +46,24 @@
             <tbody>
             <% int i = 1; %>
             <c:forEach var="transaction" items="${transaction}">
-                <tr onclick="DoNav('transactions?action=edit&id=<c:out value='${transaction.getId()}'/>');"
+                <c:choose>
+                    <c:when test="${order.getStatus() == 'open'}">
+                        <tr onclick="DoNav('transactions?action=edit&id=<c:out value='${transaction.getId()}'/>');"
                               onmouseover="ChangeColor(this, true);"
-                              onmouseout="ChangeColor(this, false);">
+                              onmouseout="ChangeColor(this, false);">                
+                    </c:when>
+                    <c:otherwise>
+                        <tr onmouseover="ChangeColor(this, true);" onmouseout="ChangeColor(this, false);">
+                    </c:otherwise>
+                </c:choose>
                     <td><%=i %></td>
-                    <td><c:out value="${transaction.id}" /></td>
-                    <td><c:out value="${transaction.id_order}" /></td>
+                    <td><c:out value="${transaction.id_order}" /></td>
                     <td><c:out value="${transaction.name}" /></td>
                     <td><c:out value="${transaction.qty}"/></td>
                     <td><c:out value="${transaction.total}"/></td>
                     <c:choose>
                     <c:when test="${order.getStatus() == 'open'}">
-                        <td>
-                            <a type="button" class="btn btn-danger" href="transactions?action=delete&id=<c:out value='${transaction.getId()}' />" onclick="return confirm('Are you sure?')" >Delete</a>                     
-                        </td>
+                        <td><a class="btn btn-outline-danger btn-sm" href="transactions?action=delete&id=<c:out value='${transaction.getId()}' />" onclick="return confirm('Are you sure?')" >Delete this item</a></td>
                     </c:when>
                     </c:choose>
 
@@ -71,6 +74,13 @@
             </tbody>
         </table>
     </div>  
+    <div align="left"  style="padding: 1%">
+        <h3><c:out value="Seller name ${user.fullname}" /></h3>
+        <h3><c:out value="Bank ${user.bankname} - ${user.accountno}" /></h3>
+    
+    </div>
+
+
     <div align="right" style="margin: 5%">
     
     <c:choose>
@@ -78,8 +88,16 @@
         <a class="btn btn-primary" href="#" />Write feedback</a>
     </c:when>
     <c:otherwise>
-        <a class="btn btn-primary" href="transactions?action=process&order=<c:out value='${order.getNo()}' />&status=<c:out value='${order.getStatus()}' />"><c:out value="${act}" /></a>
-        <a class="btn btn-danger" href="#">Cancel</a>
+        <c:choose>
+        <c:when test="${order.getStatus() != 'cancelled'}">
+            <a class="btn btn-primary" href="transactions?action=process&order=<c:out value='${order.getNo()}' />&status=<c:out value='${order.getStatus()}' />"><c:out value="${act}" /></a>
+            <a class="btn btn-danger" href="#">Cancel</a>
+        </c:when>
+        <c:otherwise>
+            <a disabled class="btn btn-outline-danger"><c:out value="${act}" /></a>
+        </c:otherwise>
+        </c:choose>
+
     </c:otherwise>
     </c:choose>
 
