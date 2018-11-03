@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.6
+-- version 4.8.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 02, 2018 at 12:06 PM
--- Server version: 10.1.29-MariaDB
--- PHP Version: 7.2.0
+-- Host: 127.0.0.1
+-- Generation Time: Nov 03, 2018 at 02:45 AM
+-- Server version: 10.1.33-MariaDB
+-- PHP Version: 7.2.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -74,6 +74,13 @@ CREATE TABLE `orders` (
   `status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `no`, `user_id`, `buyer_id`, `created_at`, `updated_at`, `status`) VALUES
+(1, -684069519, 1, 2, '2018-11-03', '2018-11-03', 'new');
+
 -- --------------------------------------------------------
 
 --
@@ -114,6 +121,14 @@ CREATE TABLE `transactions` (
   `total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `id_order`, `id_product`, `qty`, `total`) VALUES
+(1, -684069519, 5, 2, 10000),
+(2, -684069519, 6, 1, 17000);
+
 -- --------------------------------------------------------
 
 --
@@ -136,6 +151,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `fullname`, `address`, `bankname`, `accountno`, `created_at`) VALUES
+(1, 'jokowi@gmail.com', 'jokowi', 'Joko Widodo', 'Jl. Pagoda', 'CIMB', '12345', '2018-11-01'),
+(2, 'prabowo@gmail.com', 'prabowo', 'Prabowo Subianto', 'Jl. Kincir', 'BCA', '54321', '2018-11-02'),
 (3, 'test02@gmail.com', 'wew', 'test', 'tegal', 'BCA', '12345', '2018-11-02');
 
 --
@@ -159,7 +176,8 @@ ALTER TABLE `feedbacks`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `no` (`no`);
 
 --
 -- Indexes for table `products`
@@ -172,7 +190,8 @@ ALTER TABLE `products`
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_order` (`id_order`);
 
 --
 -- Indexes for table `users`
@@ -200,7 +219,7 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -212,7 +231,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -229,6 +248,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `fk_cat` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `fk_order` FOREIGN KEY (`id_order`) REFERENCES `orders` (`no`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
