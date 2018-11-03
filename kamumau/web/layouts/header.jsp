@@ -17,6 +17,15 @@
     <link rel="icon" href="favicon.ico">
 
     <title>KamuMau - sell or buy as you want</title>
+     <script type="text/javascript">
+        function ChangeColor(tableRow, highLight) {
+                if (highLight) {
+                    tableRow.style.backgroundColor = '#B2EBF2';
+                }else {
+                    tableRow.style.backgroundColor = 'white';
+                }
+            }
+    </script>
     <!-- Bootstrap core CSS -->
     <link href="/WEB-INF/stylesheets/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
@@ -26,7 +35,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"   crossorigin="anonymous"></script>
   </head>
 
-      <body class="text-center">
+      <body >
     <% 
     if (session.getAttribute("current_user") !=null) { %>
         <jsp:include page="/layouts/navbar_logged_in.jsp" flush="true"/>
@@ -38,3 +47,5 @@
    
     <!-- if logged in -->
     <!-- %@include file= "/layouts/navbar_not_logged_in.jsp" % -->
+
+    
