@@ -11,9 +11,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Order;
 import model.Product;
 import model.Transaction;
+import model.User;
 
 public class TransactionsController extends ApplicationController{
     private final static String ADD_ACTION = "new";
@@ -22,7 +24,7 @@ public class TransactionsController extends ApplicationController{
     private final static String LIST_ACTION = "lists";
     private String message= "";
     private static final String TABLE_NAME = "transaction";
-    private static final int USER_ID = 2; //untuk sementara sebagai user yg sedang login
+    //private static final int USER_ID = 2; //untuk sementara sebagai user yg sedang login
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -31,30 +33,39 @@ public class TransactionsController extends ApplicationController{
                 String action = request.getParameter("action");
                 switch (action) {
                     case "new":
+                        mustLoggedIn(request, response);
                         showNewForm(request, response);
                         break;
                     case "create":
+                        mustLoggedIn(request, response);
                         createTransaction(request, response);
                         break;
                     case "delete":
+                        mustLoggedIn(request, response);
                         deleteTransaction(request, response);
                         break;
                     case "edit":
+                        mustLoggedIn(request, response);
                         showEditForm(request, response);
                         break;
                     case "update":
+                        mustLoggedIn(request, response);
                         updateTransaction(request, response);
                         break;
                     case "viewtransaction":
+                        mustLoggedIn(request, response);
                         viewTransaction(request, response);
                         break;
                     case "process":
+                        mustLoggedIn(request, response);
                         processOrder(request, response);
                         break;
                     case "processseller":
+                        mustLoggedIn(request, response);
                         processSeller(request, response);
                         break;
                     default:
+                        mustLoggedIn(request, response);
                         listTransaction(request, response);
                         break;
                 }
@@ -113,6 +124,9 @@ public class TransactionsController extends ApplicationController{
             int no = Integer.parseInt(request.getParameter("order"));
             Order o = order.find(no);
             String action = "";
+            User user = new User();
+            user = user.find(o.getUser_id());
+        
             switch(o.getStatus()){
                 case "open":
                     action = "Checkout";
@@ -141,6 +155,7 @@ public class TransactionsController extends ApplicationController{
             request.setAttribute("transaction", transaction);
             request.setAttribute("order", o);
             request.setAttribute("act", action);
+            request.setAttribute("user", user);
             RequestDispatcher dispatcher = request.getRequestDispatcher("transactions/list.jsp");
             dispatcher.forward(request, response);
         }catch(Exception e){
@@ -156,6 +171,9 @@ public class TransactionsController extends ApplicationController{
         Order o = order.find(no);
         List<Transaction> transaction = tr.all(no);
         String action = "";
+        User user = new User();
+        user = user.find(o.getBuyer_id());
+        
         switch(o.getStatus()){
             case "new":
                 action = "Waiting for buyer to paid";
@@ -183,6 +201,7 @@ public class TransactionsController extends ApplicationController{
         request.setAttribute("transaction", transaction);
         request.setAttribute("act", action);
         request.setAttribute("order", o);
+        request.setAttribute("user", user);
         RequestDispatcher dispatcher = request.getRequestDispatcher("transactions/viewtransaction.jsp");
         dispatcher.forward(request, response);
     }
@@ -225,11 +244,15 @@ public class TransactionsController extends ApplicationController{
         int id_product = Integer.parseInt(request.getParameter("id_product"));
         int id_seller = Integer.parseInt(request.getParameter("id_seller"));
         int qty = Integer.parseInt(request.getParameter("qty"));
+        HttpSession session = request.getSession();
+        String me = session.getAttribute("current_user").toString();
+        User user = new User();
+        user = user.find(Integer.parseInt(me));
         
         Transaction transaction = new Transaction();
         transaction.setId_product(id_product);
         transaction.setQty(qty);
-        if(transaction.initOrCeate(transaction, USER_ID, id_seller)){
+        if(transaction.initOrCeate(transaction, user.getId(), id_seller)){
             message= "new added";                    
             request.setAttribute("message", message);
             response.sendRedirect("orders?action="+LIST_ACTION);

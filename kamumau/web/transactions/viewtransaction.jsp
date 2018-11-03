@@ -54,10 +54,8 @@
             </tbody>
         </table>
     </div>
-    <div align="left">
-        <h3 style="padding: 1%">    
-            <c:out value="Showing info user with id ${order.buyer_id}" /></h3>
-    
+    <div align="left"  style="padding: 1%">
+        <h3><c:out value="Buyer name ${user.fullname}" /></h3>
     </div>
     <div align="right" style="margin: 5%">
     

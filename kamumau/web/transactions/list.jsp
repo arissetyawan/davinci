@@ -74,9 +74,9 @@
             </tbody>
         </table>
     </div>  
-    <div align="left">
-        <h3 style="padding: 1%">    
-            <c:out value="Showing seller with id ${order.user_id}" /></h3>
+    <div align="left"  style="padding: 1%">
+        <h3><c:out value="Seller name ${user.fullname}" /></h3>
+        <h3><c:out value="Bank ${user.bankname} - ${user.accountno}" /></h3>
     
     </div>
 
