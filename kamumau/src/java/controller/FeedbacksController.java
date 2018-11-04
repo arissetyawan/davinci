@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Feedback;
+import model.Order;
 import model.User;
 
 
@@ -108,8 +109,11 @@ public class FeedbacksController extends ApplicationController {
                 
                 throws ServletException, IOException {
              User user = new User();
-        request.setAttribute("users", user.find(1));
-        
+             Order order = new Order();
+             int order_no = Integer.parseInt(request.getParameter("order"));
+             order = order.find(order_no);
+        request.setAttribute("users", user.find(order.getUser_id())); 
+        request.setAttribute("order", order);
             RequestDispatcher dispatcher = request.getRequestDispatcher("feedbacks/new.jsp");
             dispatcher.forward(request, response);
         }
