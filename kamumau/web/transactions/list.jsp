@@ -85,7 +85,7 @@
     
     <c:choose>
     <c:when test="${order.getStatus() == 'completed'}">
-        <a class="btn btn-primary" href="#" />Write feedback</a>
+        <a class="btn btn-primary" href="feedbacks?action=new&order=<c:out value='${order.getNo()}' />" />Write feedback</a>
     </c:when>
     <c:otherwise>
         <c:choose>
