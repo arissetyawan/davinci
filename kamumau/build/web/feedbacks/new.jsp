@@ -59,7 +59,7 @@
 
                 <div class="form-group">
                     <label for="nama">Order No :</label><br>
-                    <input type="text" class="form-control col-sm-4" name="order_id" aria-describedby="order_id" value="1" placeholder="Order No" required oninvalid="this.setCustomValidity('order_id tidak boleh kosong')" oninput="setCustomValidity('')" readonly/>
+                    <input type="text" class="form-control col-sm-4" name="order_id" aria-describedby="order_id" value="<c:out value='${order.getNo()}' />" placeholder="Order No" required oninvalid="this.setCustomValidity('order_id tidak boleh kosong')" oninput="setCustomValidity('')" readonly/>
 			</div><br><br>
                 <div class="form-group">
                     <label for="comment">
