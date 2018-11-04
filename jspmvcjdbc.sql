@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2018 at 02:45 AM
--- Server version: 10.1.33-MariaDB
--- PHP Version: 7.2.6
+-- Waktu pembuatan: 04 Nov 2018 pada 11.56
+-- Versi server: 10.1.33-MariaDB
+-- Versi PHP: 7.2.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,28 +25,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- Struktur dari tabel `categories`
 --
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `categories`
+-- Dumping data untuk tabel `categories`
 --
 
-INSERT INTO `categories` (`id`, `category_id`, `name`, `description`) VALUES
-(1, 1, 'Makanan Ringan', 'Makanan yang ringan'),
-(2, 123, 'Sembako', 'Bahan - bahan pokok');
+INSERT INTO `categories` (`id`, `category_id`, `user`, `name`, `description`) VALUES
+(3, 1, 1, 'Electronic', 'this is the description of electronic');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `feedbacks`
+-- Struktur dari tabel `feedbacks`
 --
 
 CREATE TABLE `feedbacks` (
@@ -61,7 +61,7 @@ CREATE TABLE `feedbacks` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- Struktur dari tabel `orders`
 --
 
 CREATE TABLE `orders` (
@@ -75,7 +75,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `orders`
+-- Dumping data untuk tabel `orders`
 --
 
 INSERT INTO `orders` (`id`, `no`, `user_id`, `buyer_id`, `created_at`, `updated_at`, `status`) VALUES
@@ -84,7 +84,7 @@ INSERT INTO `orders` (`id`, `no`, `user_id`, `buyer_id`, `created_at`, `updated_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Struktur dari tabel `products`
 --
 
 CREATE TABLE `products` (
@@ -97,20 +97,10 @@ CREATE TABLE `products` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `stock`, `owner`, `updated_at`) VALUES
-(2, 1, 'Ciki', 5000, 10, 2, '2018-10-11 17:21:24'),
-(3, 123, 'Beras', 5000, 23, 1, '2018-10-11 17:28:11'),
-(5, 1, 'citos', 5000, 2, 1, '2018-10-11 17:31:38'),
-(6, 1, 'Wirog', 17000, 10, 1, '2018-10-24 10:28:45');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactions`
+-- Struktur dari tabel `transactions`
 --
 
 CREATE TABLE `transactions` (
@@ -122,7 +112,7 @@ CREATE TABLE `transactions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transactions`
+-- Dumping data untuk tabel `transactions`
 --
 
 INSERT INTO `transactions` (`id`, `id_order`, `id_product`, `qty`, `total`) VALUES
@@ -132,7 +122,7 @@ INSERT INTO `transactions` (`id`, `id_order`, `id_product`, `qty`, `total`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktur dari tabel `users`
 --
 
 CREATE TABLE `users` (
@@ -147,7 +137,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `users`
+-- Dumping data untuk tabel `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `fullname`, `address`, `bankname`, `accountno`, `created_at`) VALUES
@@ -160,97 +150,104 @@ INSERT INTO `users` (`id`, `email`, `password`, `fullname`, `address`, `bankname
 --
 
 --
--- Indexes for table `categories`
+-- Indeks untuk tabel `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `category_id` (`category_id`);
+  ADD UNIQUE KEY `category_id` (`category_id`),
+  ADD KEY `fk_user_tb_user` (`user`);
 
 --
--- Indexes for table `feedbacks`
+-- Indeks untuk tabel `feedbacks`
 --
 ALTER TABLE `feedbacks`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `orders`
+-- Indeks untuk tabel `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `no` (`no`);
 
 --
--- Indexes for table `products`
+-- Indeks untuk tabel `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_cat` (`category_id`);
 
 --
--- Indexes for table `transactions`
+-- Indeks untuk tabel `transactions`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_order` (`id_order`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `categories`
+-- AUTO_INCREMENT untuk tabel `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `feedbacks`
+-- AUTO_INCREMENT untuk tabel `feedbacks`
 --
 ALTER TABLE `feedbacks`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT untuk tabel `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT untuk tabel `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `transactions`
+-- AUTO_INCREMENT untuk tabel `transactions`
 --
 ALTER TABLE `transactions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `products`
+-- Ketidakleluasaan untuk tabel `categories`
+--
+ALTER TABLE `categories`
+  ADD CONSTRAINT `fk_user_tb_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`);
+
+--
+-- Ketidakleluasaan untuk tabel `products`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `fk_cat` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
 
 --
--- Constraints for table `transactions`
+-- Ketidakleluasaan untuk tabel `transactions`
 --
 ALTER TABLE `transactions`
   ADD CONSTRAINT `fk_order` FOREIGN KEY (`id_order`) REFERENCES `orders` (`no`);
