@@ -3,6 +3,7 @@
     Created on : Oct 11, 2018, 7:35:36 PM
     Author     : x201
 --%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <a class="navbar-brand" href="#">KamuMau</a>
@@ -27,7 +28,7 @@
         <a class="nav-link" href="products?action=list">Products</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="#">Sign In</a>
+        <a class="nav-link" href="users?action=login">Sign In</a>
       </li>
       
       

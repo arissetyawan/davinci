@@ -9,7 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Order;
+import model.User;
 
 public class OrdersController extends ApplicationController{
     private final static String ADD_ACTION = "new";
@@ -17,7 +19,7 @@ public class OrdersController extends ApplicationController{
     private final static String EDIT_ACTION = "edit";
     private final static String LIST_ACTION = "lists";
     private String message= "";
-    private static final int USER_ID = 2; //untuk sementara sebagai user yg sedang login
+    //private static final int USER_ID = 2; //untuk sementara sebagai user yg sedang login
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -27,21 +29,27 @@ public class OrdersController extends ApplicationController{
                 try {
                     switch (action) {
                     case "create":
+                        mustLoggedIn(request, response);
                         createOrder(request, response);
                         break;
                     case "delete":
+                        mustLoggedIn(request, response);
                         deleteOrder(request, response);
                         break;
                     case "edit":
+                        mustLoggedIn(request, response);
                         showEditForm(request, response);
                         break;
                     case "update":
+                        mustLoggedIn(request, response);
                         updateOrder(request, response);
                         break;
                     case "cancel":
+                        mustLoggedIn(request, response);
                         cancelOrder(request, response);
                         break;
                     default:
+                        mustLoggedIn(request, response);
                         listOrderWithChoose(request, response);
                         break;
                 }
@@ -64,10 +72,13 @@ public class OrdersController extends ApplicationController{
         String status = request.getParameter("status");
         Order o = new Order();
         o.setStatus(status);
+        HttpSession session = request.getSession();
+        String me = session.getAttribute("current_user").toString();
+        
         if (o.update()){
             message= "order updated";     
             request.setAttribute("message", message);
-            List<Order> order = o.all(USER_ID);
+            List<Order> order = o.all(Integer.parseInt(me));
             request.setAttribute("order", order);
             request.getRequestDispatcher("/orders/list.jsp").include(request, response);
         }else{
@@ -99,7 +110,9 @@ public class OrdersController extends ApplicationController{
     
     private void createOrder(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         Order order = new Order();
-        order.setUser_id(USER_ID);
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        order.setUser_id(me);
         if (order.create()){
             message= "new order added";                    
             request.setAttribute("message", message);
@@ -114,10 +127,13 @@ public class OrdersController extends ApplicationController{
         
     private void listOrderWithChoose(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         Order o= new Order();
-        List<Order> order = o.allIncoming(USER_ID);
-        List<Order> mycart = o.allMyOrders(USER_ID);
-        List<Order> myCompletedOrders = o.allCompletedOrders(USER_ID);
-        List<Order> myOut = o.allOutcoming(USER_ID);
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+
+        List<Order> order = o.allIncoming(me);
+        List<Order> mycart = o.allMyOrders(me);
+        List<Order> myCompletedOrders = o.allCompletedOrders(me);
+        List<Order> myOut = o.allOutcoming(me);
         request.setAttribute("mycart", mycart);
         request.setAttribute("order", order);
         request.setAttribute("completed", myCompletedOrders);

@@ -159,8 +159,7 @@
                     <td><c:out value="${completed.created_at}"/></td>
                     <td><c:out value="${completed.updated_at}"/></td>
                     <td>
-                        <a class="btn btn-outline-success btn-secondary btn-sm" href="orders?action=delete&id=<c:out value='${completed.getId()}' />&no=<c:out value='${completed.getNo()}' />" 
-                           onclick="return confirm('Are you sure?  The items on this bucket will be deleted too')">Feedback</a>
+                        <a class="btn btn-outline-success btn-secondary btn-sm" href="feedbacks?action=new&order=<c:out value='${completed.getNo()}' />">Feedback</a>
                     </td>                
             </tr>
             <% index++; %>
