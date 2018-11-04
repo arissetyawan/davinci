@@ -98,7 +98,7 @@ public class Category extends MyConnection {
 
     public boolean create() {
         boolean result;
-        String query = "INSERT INTO "+ categories +"(name, category_id, description) values ('" + this.name + "', '" + this.category_id + "', '" + this.description + "')";
+        String query = "INSERT INTO "+ categories +"(name, category_id, description, user) values ('" + this.name + "', '" + this.category_id + "', '" + this.description + "', '" + 1 + "')";
         try {
             result= this.stateOpen().executeUpdate(query) > 0;
             this.stateClose();

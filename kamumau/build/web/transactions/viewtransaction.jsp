@@ -56,13 +56,14 @@
     </div>
     <div align="left"  style="padding: 1%">
         <h3><c:out value="Buyer name ${user.fullname}" /></h3>
+        <h4><c:out value="Address ${user.address}" /></h4>
     </div>
     <div align="right" style="margin: 5%">
     
     <c:choose>
         <c:when test="${order.getStatus() != 'cancelled'}">
         <a class="btn btn-primary" href="transactions?action=processseller&order=<c:out value='${order.getNo()}' />&status=<c:out value='${order.getStatus()}' />"><c:out value="${act}" /></a>
-        <a class="btn btn-danger" href="#">Cancel</a>
+        <a class="btn btn-danger" href="orders?action=cancel&no=<c:out value='${order.getNo()}' />">Cancel</a>
     </c:when>
         <c:otherwise>
             <a disabled class="btn btn-outline-danger"><c:out value="${act}" /></a>

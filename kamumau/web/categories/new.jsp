@@ -11,27 +11,18 @@
 <main role="main">
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-  <div class="container">
-
-  <h1>Adding Category</h1>            
-
+<div class="jumbotron" style="padding-top: 20px;">
+    <div class="container" >
+      <center><h2>Add Category</h2>   </center>         
   <h4><c:out value='${message}' /></h4>
 
   <form action="/kamumau/categories?action=create" method="post"> 
-  <%@include file= "form.html" %>
+  <%@include file= "form.jsp" %>
   </form>
-
- 
-  
-
   <hr>
-
 </div>
 </div> 
-
  <!-- /container --> 
-
 </main>
 
     
