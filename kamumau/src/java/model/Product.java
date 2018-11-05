@@ -30,7 +30,7 @@ public class Product extends MyConnection{
     protected String updated_at;
     protected int owner;
     
-    public int user_id=2; //hardcoded user_id
+    //public int user_id=2; //hardcoded user_id
             
     public Product(){
         super();
@@ -92,7 +92,7 @@ public class Product extends MyConnection{
         this.stock = stock;
     }
     
-    public boolean addProduct(Product p){
+    public boolean addProduct(Product p, int user_id){
         
         String query = "insert into products(name, category_id, price, stock, owner) "
                     + "values('"+p.getName()+"', "
@@ -122,7 +122,7 @@ public class Product extends MyConnection{
         return true;
     }    
     
-    public boolean updateProduct(Product p){
+    public boolean updateProduct(Product p, int user_id){
         String query = "update products set name='"+p.getName()+"',"
                 + "category_id='"+p.getCategory_id()+"',"
                 + "price='"+p.getPrice()+"',"
@@ -139,7 +139,7 @@ public class Product extends MyConnection{
         return true;
     }
     
-    public ArrayList<Product> getProducts() throws SQLException{
+    public ArrayList<Product> getProducts( int user_id) throws SQLException{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p inner join "
                 + "categories c on p.category_id = c.category_id inner join users u on p.owner = u.id "
@@ -166,7 +166,7 @@ public class Product extends MyConnection{
         return products;
     }
     
-    public ArrayList<Product> getProductsZeroStock() throws SQLException{
+    public ArrayList<Product> getProductsZeroStock( int user_id) throws SQLException{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p inner join "
                 + "categories c on p.category_id = c.category_id inner join users u on p.owner = u.id "
@@ -193,7 +193,7 @@ public class Product extends MyConnection{
         return products;
     }
     
-    public ArrayList<Product> getAllProducts() throws SQLException{
+    public ArrayList<Product> getAllProducts( int user_id) throws SQLException{
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at, p.owner as owner from products p "
                 + "inner join categories c on p.category_id = c.category_id inner join "
@@ -241,7 +241,7 @@ public class Product extends MyConnection{
     }
     
     
-    public ArrayList<Product> getProductByName(String param){
+    public ArrayList<Product> getProductByName(String param , int user_id){
         ArrayList<Product> products = new ArrayList<>();
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p "
@@ -265,7 +265,7 @@ public class Product extends MyConnection{
     }
     
     
-    public ArrayList<Product> getProductByCategory(int id){
+    public ArrayList<Product> getProductByCategory(int id, int user_id){
         ArrayList<Product> products = new ArrayList<>();
         String query = "select p.id as product_id , p.name as name, c.name as category, "
                 + "p.price as price, p.stock as stock , p.updated_at as updated_at from products p "

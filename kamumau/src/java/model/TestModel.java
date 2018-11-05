@@ -30,11 +30,7 @@ public class TestModel{
         o.initOrCeate(21);
         o.find(5);
         */
-        Product p = new Product();
-        //Category c = new Category();
-        //List<Product> products = p.getAllProducts();
         
-        System.out.println(p.getProductByName("ci"));
 
     }
 }

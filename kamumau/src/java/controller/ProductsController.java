@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Category;
 import model.Product;
 
@@ -51,30 +52,39 @@ public class ProductsController extends ApplicationController {
                 try {
                 switch (action) {
                     case "new":
+                        mustLoggedIn(request, response);
                         showNewForm(request, response);
                         break;
                     case "create":
+                        mustLoggedIn(request, response);
                         createProduct(request, response);
                         break;
                     case "delete":
+                        mustLoggedIn(request, response);
                         deleteProduct(request, response);
                         break;
                     case "edit":
+                        mustLoggedIn(request, response);
                         showEditForm(request, response);
                         break;
                     case "update":
+                        mustLoggedIn(request, response);
                         updateProduct(request, response);
                         break;
                     case "search":
+                        mustLoggedIn(request, response);
                         searchProductByName(request, response);
                         break;
                     case "search-by-category":
+                        mustLoggedIn(request, response);
                         searchProductByCategory(request, response);
                         break;
                     case "list":
+                        mustLoggedIn(request, response);
                         listProduct(request, response);
                         break;
                     default:
+                        mustLoggedIn(request, response);
                         searchProduct(request, response);
                         break;
                 }
@@ -89,8 +99,10 @@ public class ProductsController extends ApplicationController {
             throws SQLException, IOException, ServletException {
         Product p = new Product();
         Category c = new Category();
-        List<Product> products = p.getProducts();
-        List<Product> productsZero = p.getProductsZeroStock();
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        List<Product> products = p.getProducts(me);
+        List<Product> productsZero = p.getProductsZeroStock(me);
         List<Category> categories = c.all();
         request.setAttribute("categories", categories);
         request.setAttribute("products", products);
@@ -103,7 +115,9 @@ public class ProductsController extends ApplicationController {
             throws SQLException, IOException, ServletException {
         Product p = new Product();
         Category c = new Category();
-        List<Product> products = p.getAllProducts();
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        List<Product> products = p.getAllProducts(me);
         List<Category> categories = c.all();
         request.setAttribute("categories", categories);
         request.setAttribute("products", products);
@@ -116,7 +130,9 @@ public class ProductsController extends ApplicationController {
         String pname = request.getParameter("product");
         Product p = new Product();
         Category c = new Category();
-        List<Product> products = p.getProductByName(pname);
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        List<Product> products = p.getProductByName(pname, me);
         List<Category> categories = c.all();
         request.setAttribute("categories", categories);
         request.setAttribute("products", products );
@@ -129,7 +145,9 @@ public class ProductsController extends ApplicationController {
         int pname = Integer.parseInt(request.getParameter("id"));
         Product p = new Product();
         Category c = new Category();
-        List<Product> products = p.getProductByCategory(pname);
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        List<Product> products = p.getProductByCategory(pname, me);
         List<Category> categories = c.all();
         request.setAttribute("categories", categories);
         request.setAttribute("products", products );
@@ -139,6 +157,8 @@ public class ProductsController extends ApplicationController {
     
     private void createProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
         String name = request.getParameter("name");
         String category_id = request.getParameter("category_id");
         float price = Float.parseFloat(request.getParameter("price"));
@@ -151,7 +171,7 @@ public class ProductsController extends ApplicationController {
         p.setStock(stock);
         
         
-        if (p.addProduct(p)){
+        if (p.addProduct(p, me)){
             message= "new product added";                    
             request.setAttribute("message", message);
             response.sendRedirect("products?action="+list_action);
@@ -165,8 +185,11 @@ public class ProductsController extends ApplicationController {
     
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException, SQLException {
+            HttpSession session = request.getSession();
+            int me = Integer.parseInt(session.getAttribute("current_user").toString());
             Category c = new Category();
             List<Category> categories = c.all();
+            
             request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("products/new.jsp");
             dispatcher.forward(request, response);
@@ -188,6 +211,8 @@ public class ProductsController extends ApplicationController {
     
    private void updateProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
         int product_id = Integer.parseInt(request.getParameter("product_id"));
         String category_id = request.getParameter("category_id");
         String name = request.getParameter("name");
@@ -202,7 +227,7 @@ public class ProductsController extends ApplicationController {
         p.setStock(stock);
         
         
-        if (p.updateProduct(p)){
+        if (p.updateProduct(p, me)){
             message= "product updated";     
             request.setAttribute("message", message);
             listProduct(request, response);
