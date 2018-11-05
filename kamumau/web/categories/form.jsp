@@ -16,13 +16,13 @@
             <td><b>Parent Id</b></td>
             <td>
                 <div class="form-group">
-                    <input class="form-control" type="text" id="category_id" name="category_id" value="<c:out value='${category.category_id}' />" />
-<!--                    <select class="form-control" id="category_id" name="st Of Parent Category<<<</bcategory_id" >
-                        <option value=''><b>>>>Li></option>
+
+                    <select class="form-control" id="category_id" name="category_id" >
+                        <option value=''>List of categories</option>
                         <c:forEach var="categories" items="${categories}">
-                            <option value="<c:out value='${categories.category_id}'/> "><c:out value="${categories.name}"/></option>
+                            <option value="<c:out value='${categories.id}'/> "><c:out value="${categories.name}"/></option>
                         </c:forEach>
-                    </select>-->
+                    </select>
                 </div>
             </td>
         </tr>  

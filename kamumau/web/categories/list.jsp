@@ -34,7 +34,7 @@
                                     <p><c:out value="${Category.description}" /></p>
                                     <p><a class="btn btn-secondary" style="background-color: green;" href="categories?action=edit&id=<c:out value='${Category.getId()}' />"role="button" >Edit</a>
                                        <a class="btn btn-secondary" style="background-color: red;" href="categories?action=delete&id=<c:out value='${Category.getId()}' />" role="button" onclick="return confirm('Are you sure?')">Delete</a> 
-                                       <a class="btn btn-primary"  href="#" role="button">View products &raquo;</a></p>
+                                       <a class="btn btn-primary"  href="products?action=search-by-category&id=<c:out value="${Category.category_id}" />" role="button">View products &raquo;</a></p>
                                     <p></p>
                                 </div>
                             </c:forEach>
