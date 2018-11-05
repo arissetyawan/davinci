@@ -21,7 +21,9 @@
       <li class="nav-item active">
         <a class="nav-link" href="products?action=list">My Products</a>
       </li>
-      
+      <li class="nav-item active">
+        <a class="nav-link" href="categories?action=list">My Categories</a>
+      </li>
       <li class="nav-item active">
         <a class="nav-link" href="users?action=profile">My Profile</a>
       </li>
