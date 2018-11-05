@@ -16,7 +16,7 @@
       <li class="nav-item active">
         <a class="nav-link" href="products?action=all">Home</a>
       </li>
-       <li class="nav-item dropdown active">
+      <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01">
           <c:forEach items="${categories}" var="categories">
@@ -30,8 +30,6 @@
       <li class="nav-item active">
         <a class="nav-link" href="users?action=login">Sign In</a>
       </li>
-      
-      
     </ul>
     <form class="form-inline my-2 my-lg-0" method="POST" action="products?action=search">
       <input class="form-control mr-sm-2" name="product" type="text" placeholder="Search Products..." aria-label="Search Products...">
