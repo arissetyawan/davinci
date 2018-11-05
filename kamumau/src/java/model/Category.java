@@ -98,7 +98,7 @@ public class Category extends MyConnection {
 
     public boolean create() {
         boolean result;
-        String query = "INSERT INTO "+ categories +"(name, category_id, description, user) values ('" + this.name + "', '" + this.category_id + "', '" + this.description + "', '" + 1 + "')";
+        String query = "INSERT INTO "+ categories +"(name, category_id, description, user) values ('" + this.name + "', '" + this.category_id + "', '" + this.description + "', '" + 1 + "' )";
         try {
             result= this.stateOpen().executeUpdate(query) > 0;
             this.stateClose();
@@ -165,6 +165,29 @@ public class Category extends MyConnection {
         }
         return categories;
     }
+    
+    
+    public ArrayList<Category> allParent(int me){
+        String query = "SELECT * FROM "+categories+"  where category_id is NULL and user = "+me+"";
+        ArrayList<Category> categories = new ArrayList<>();
+        try {
+            Statement stmt = this.conn().createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()) {
+                Category category = new Category();
+                category.setName(res.getString("name"));
+                category.setParentId(res.getInt("category_id"));
+                category.setDescription(res.getString("description"));
+                category.setId(res.getInt("id"));
+                categories.add(category);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return categories;
+    }
+    
     
     public ArrayList<Category> search(String keyword){
         String query = "SELECT * FROM " + categories + " where name = '"+keyword+"'" ;

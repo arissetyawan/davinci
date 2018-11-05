@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Category;
 
 
@@ -144,8 +145,11 @@ public class CategoriesController extends HttpServlet {
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException {
             Category category= new Category();
-            List<Category> cat = category.all();
-             request.setAttribute("categories", cat);
+            HttpSession session = request.getSession();
+            int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        
+            List<Category> cat = category.allParent(me);  
+            request.setAttribute("categories", cat);
             RequestDispatcher dispatcher = request.getRequestDispatcher("categories/new.jsp");
             dispatcher.forward(request, response);
         }
@@ -208,7 +212,7 @@ public class CategoriesController extends HttpServlet {
     private void createCategory(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         String name = request.getParameter("name");
-        int category_id= Integer.valueOf(request.getParameter("category_id"));
+        int category_id= Integer.parseInt(request.getParameter("category_id").trim());
         String description = request.getParameter("description");
  
         Category category = new Category();
