@@ -22,10 +22,24 @@ and open the template in the editor.
                         <option>MANDIRI</option>
                         <option>CIMB</option>
                     </select>
-                </td></tr>
-            <tr><td>Account No</td>
-                <td><input type="text" class="form-control" name="accountno" value="<c:out value='${user.getAccountno()}' />"/></td></tr>
-            <tr><td colspan="2"><input type="submit" value="Update"/></td></tr>   
+                </td>
+            </tr>
+            <tr>
+                <td>Account No</td>
+                <td>
+                    <input type="text" class="form-control" name="accountno" value="<c:out value='${user.getAccountno()}' />"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input class="btn btn-outline-success btn-primary btn-md" type="submit" value="Update"/>
+                </td>
+            </tr>   
+            <tr>
+                <td colspan="2">
+                    <a class="btn btn-outline-danger btn-danger btn-md" href="users?action=deactivate">Deactivate my account</a>
+                </td>
+            </tr> 
            
             
         </table>
