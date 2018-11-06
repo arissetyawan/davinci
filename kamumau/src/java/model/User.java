@@ -119,7 +119,7 @@ public class User extends MyConnection {
         if(!validate()){
             return false;
         }
-        String query ="INSERT INTO "+ tableName+"(email,password,fullname,address,bankname,accountno,created_at) values ('"+this.email+"','"+ this.password+"','"+ this.fullname+"','"+ this.address+"','"+ this.bankname+"','"+ this.accountno+"','"+now_date+"')";
+        String query ="INSERT INTO "+ tableName+"(email,password,fullname,address,bankname,accountno,created_at,updated_at) values ('"+this.email+"','"+ this.password+"','"+ this.fullname+"','"+ this.address+"','"+ this.bankname+"','"+ this.accountno+"','"+now_date+"','"+now_date+"')";
         try{
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query)>0;
@@ -129,6 +129,7 @@ public class User extends MyConnection {
         }
     }
   public boolean update() {
+      String now_date= generateDate();
         if(!validate()){
             return false;
         }
@@ -136,7 +137,7 @@ public class User extends MyConnection {
         + this.email + "', password='" + this.password
         + "', fullname='" + this.fullname
         + "',address='"+ this.address + "',bankname='"
-        + this.bankname + "',accountno='"+ this.accountno + "' WHERE id = " + this.id + " ";
+        + this.bankname + "',accountno='"+ this.accountno + "',updated_at='"+ now_date + "' WHERE id = " + this.id + " ";
         try {
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query) > 0;
@@ -204,7 +205,7 @@ public class User extends MyConnection {
     public boolean doLogin() {
         User user = new User();
         // find to db match it by email and password;
-        String query = "SELECT * FROM " + tableName + " WHERE email = '" + this.email + "' and password = '" + this.password + "'";
+        String query = "SELECT * FROM " + tableName + " WHERE email = '" + this.email + "' and password = '" + this.password + "' AND deleted=0";
         // select * from user where email = this.email and password= this.password
         try {
             Statement stmt = this.conn().createStatement();
@@ -225,16 +226,29 @@ public class User extends MyConnection {
             System.out.println(e.getMessage());
             return false;
         }
-    }
-    
-    
-    
-    
-    
-
-
-
-
-    
-    
+        }
+      public boolean deactivate(){
+       String query = "UPDATE "+ tableName + " SET deleted = 1 WHERE id = " + this.id + " ";
+        try {
+            Statement stmt = this.conn().createStatement();
+            return stmt.executeUpdate(query) > 0;
+        } catch (SQLException e) {
+            System.out.println("deactivate() : "+e.getMessage());
+            return false;
+        }
+   } 
 }
+
+    
+    
+    
+    
+    
+    
+
+
+
+
+    
+    
+
