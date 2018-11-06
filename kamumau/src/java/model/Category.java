@@ -26,12 +26,22 @@ public class Category extends MyConnection {
     public String name;
     public int category_id;
     public String description;
+    private int user;
 
     
     
     public int getId() {
         return id;
     }
+
+    public int getUser() {
+        return user;
+    }
+
+    public void setUser(int user) {
+        this.user = user;
+    }
+    
     
     public String getName() {
         return name;
@@ -88,6 +98,7 @@ public class Category extends MyConnection {
                 category.setName(res.getString("name"));
                 category.setParentId(res.getInt("category_id"));
                 category.setId(res.getInt("id"));
+                category.setUser(res.getInt("user"));
                 category.setDescription(res.getString("description"));
             }
         } catch (SQLException e) {
@@ -98,7 +109,12 @@ public class Category extends MyConnection {
 
     public boolean create() {
         boolean result;
-        String query = "INSERT INTO "+ categories +"(name, category_id, description, user) values ('" + this.name + "', '" + this.category_id + "', '" + this.description + "', '" + 1 + "' )";
+        String query = "";
+        if(this.category_id == 0){
+            query = "INSERT INTO "+ categories +"(name, category_id, description, user) values ('" + this.name + "', NULL , '" + this.description + "', '" + this.user + "' )";
+        }else{
+            query = "INSERT INTO "+ categories +"(name, category_id, description, user) values ('" + this.name + "', '" + this.category_id + "', '" + this.description + "', '" + this.user + "' )";    
+        }
         try {
             result= this.stateOpen().executeUpdate(query) > 0;
             this.stateClose();
@@ -127,6 +143,7 @@ public class Category extends MyConnection {
         + "' WHERE id = " + this.id + " ";
         try {
             Statement stmt = this.conn().createStatement();
+            System.out.println("Uhuy :"+ stmt.executeUpdate(query));
             return stmt.executeUpdate(query) > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -135,7 +152,7 @@ public class Category extends MyConnection {
     }
     
       public boolean delete() {
-        String query = "DELETE FROM " + categories + " WHERE id = " + this.id + " ";
+        String query = "DELETE FROM " + categories + " WHERE id = " + this.id + " and user="+this.user+"";
         try {
             Statement stmt = this.conn().createStatement();
             return stmt.executeUpdate(query) > 0;
@@ -146,7 +163,7 @@ public class Category extends MyConnection {
     }
 
     public ArrayList<Category> all(){
-        String query = "SELECT * FROM " + categories;
+        String query = "SELECT * FROM " + categories + " where user="+this.user;
         ArrayList<Category> categories = new ArrayList<>();
         try {
             Statement stmt = this.conn().createStatement();
@@ -155,6 +172,7 @@ public class Category extends MyConnection {
                 Category category = new Category();
                 category.setName(res.getString("name"));
                 category.setParentId(res.getInt("category_id"));
+                category.setUser(res.getInt("user"));
                 category.setDescription(res.getString("description"));
                 category.setId(res.getInt("id"));
                 categories.add(category);
@@ -179,6 +197,7 @@ public class Category extends MyConnection {
                 category.setParentId(res.getInt("category_id"));
                 category.setDescription(res.getString("description"));
                 category.setId(res.getInt("id"));
+                category.setUser(res.getInt("user"));
                 categories.add(category);
             }
             
@@ -209,4 +228,6 @@ public class Category extends MyConnection {
         }
         return categories;
     }
+    
+    
 }

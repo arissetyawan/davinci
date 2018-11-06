@@ -18,7 +18,7 @@
                 <div class="form-group">
 
                     <select class="form-control" id="category_id" name="category_id" >
-                        <option value=''>List of categories</option>
+                        <option value='0'>Parent</option>
                         <c:forEach var="categories" items="${categories}">
                             <option value="<c:out value='${categories.id}'/> "><c:out value="${categories.name}"/></option>
                         </c:forEach>

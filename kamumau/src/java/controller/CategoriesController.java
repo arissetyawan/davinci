@@ -7,7 +7,11 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Category;
+import model.Product;
 
 
 
@@ -23,7 +28,7 @@ import model.Category;
  *
  * @author x201
  */
-public class CategoriesController extends HttpServlet {
+public class CategoriesController extends ApplicationController {
     
     private final static String add_action = "new";
     private final static String delete_action = "delete";
@@ -53,24 +58,32 @@ public class CategoriesController extends HttpServlet {
                 try {
                     switch (action) {
                     case "new":
+                        mustLoggedIn(request, response);
                         showNewForm(request, response);
                         break;
                     case "create":
+                        mustLoggedIn(request, response);
                         createCategory(request, response);
                         break;
                     case "delete":
+                        mustLoggedIn(request, response);
                         deleteCategory(request, response);
                         break;
                     case "edit":
+                        mustLoggedIn(request, response);
                         showEditForm(request, response);
                         break;
                     case "update":
+                        mustLoggedIn(request, response);
                         updateCategory(request, response);
                         break;
                     case "search":
+                        mustLoggedIn(request, response);
                         searchCategory(request, response);
                         break;
+                        
                     default:
+                        mustLoggedIn(request, response);
                         listCategories(request, response);
                         break;
                     }
@@ -85,6 +98,9 @@ public class CategoriesController extends HttpServlet {
     private void listCategories(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         Category c= new Category();
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        c.setUser(me);
         List<Category> categories = c.all();
         request.setAttribute("categories", categories);
         RequestDispatcher dispatcher = request.getRequestDispatcher("categories/list.jsp");
@@ -96,7 +112,7 @@ public class CategoriesController extends HttpServlet {
             throws SQLException, IOException, ServletException {
         Category c= new Category();
         String keyword = request.getParameter("keyword");
-        System.out.println("ikhwanudin"+keyword);
+        System.out.println("keyword"+keyword);
         List<Category> categories = c.search(keyword);
         request.setAttribute("categories", categories);
         RequestDispatcher dispatcher = request.getRequestDispatcher("categories/search.jsp");
@@ -147,7 +163,7 @@ public class CategoriesController extends HttpServlet {
             Category category= new Category();
             HttpSession session = request.getSession();
             int me = Integer.parseInt(session.getAttribute("current_user").toString());
-        
+            
             List<Category> cat = category.allParent(me);  
             request.setAttribute("categories", cat);
             RequestDispatcher dispatcher = request.getRequestDispatcher("categories/new.jsp");
@@ -156,9 +172,12 @@ public class CategoriesController extends HttpServlet {
       private void deleteCategory(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
- 
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        
         Category category = new Category();
         category.setId(id);
+        category.setUser(me);
         if(category.delete()){
             message= "category deleted";                    
         }
@@ -209,16 +228,22 @@ public class CategoriesController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    private void createCategory(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void createCategory(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         String name = request.getParameter("name");
+        //String c = request.getParameter("category_id").trim().equals("0") ?  "0" : ;
         int category_id= Integer.parseInt(request.getParameter("category_id").trim());
         String description = request.getParameter("description");
- 
+        HttpSession session = request.getSession();
+        int me = Integer.parseInt(session.getAttribute("current_user").toString());
+        
         Category category = new Category();
         category.setName(name);
         category.setParentId(category_id);
         category.setDescription(description);
+        category.setUser(me);
+        
+        
+        
         if (category.create()){
             message= "new category added";                    
             request.setAttribute("message", message);
@@ -230,4 +255,6 @@ public class CategoriesController extends HttpServlet {
             request.getRequestDispatcher("categories?action="+add_action).include(request, response);
         }
     }
+    
+
 }
