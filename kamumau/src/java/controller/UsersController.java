@@ -73,6 +73,12 @@ public class UsersController extends ApplicationController {
             case "update":
                 mustLoggedIn(request, response);
                 updateProfile(request, response);
+                break;
+            case "deactivate":
+                mustLoggedIn(request, response);
+                deactivateAccount(request, response);
+                //logout(request, response);
+                break;
             default:
                 showLoginForm(request, response);
                 break;
@@ -233,11 +239,29 @@ public class UsersController extends ApplicationController {
         if(user.update()){
             message="update";
             request.setAttribute("message", message);
-            response.sendRedirect("users?action="+Update_action);
+            response.sendRedirect("users?action=profile");
         }else{
             message = " user failed to update";
             request.setAttribute("message", message);
-            request.getRequestDispatcher("users?action="+Update_action).include(request, response);
+            request.getRequestDispatcher("users?action=profile").include(request, response);
+        }
+    }
+        
+        private void deactivateAccount(HttpServletRequest request, HttpServletResponse response) throws SQLException,IOException,ServletException{
+        HttpSession session = request.getSession();
+        String me = session.getAttribute("current_user").toString();
+        
+        User user= new User();
+        user.setId(Integer.parseInt(me));
+        if(user.deactivate()){
+            message="update";
+            request.setAttribute("message", message);
+            response.sendRedirect("users?action=profile");
+            logout(request, response);
+        }else{
+            message = " user failed to update";
+            request.setAttribute("message", message);
+            request.getRequestDispatcher("users?action=profile").include(request, response);
         }
     }
 
